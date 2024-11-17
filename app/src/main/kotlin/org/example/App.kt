@@ -4,32 +4,161 @@
 package org.example
 
 import io.javalin.Javalin
+import kotlin.random.Random
 
-class UserReqDto(
+class UserCreateReqDto(
     val username: String,
     val password: String,
     val email: String
 )
 
+class UserUpdateReqDto(
+    val username: String?,
+    val password: String?,
+    val email: String?
+)
+
 fun main() {
     val mapperConfig = MapperConfig()
+    val userDb = Database // this is a object
 
     val app = Javalin.create { config ->
         config.jsonMapper(mapperConfig.gsonMapper)
     }.start(7070)
 
-    app.get("/users") { ctx -> 
-        ctx.result("fetchin users!");
+    app.get("/users") { ctx ->
+        val users = userDb.getAll()
+        ctx.json(users)
     }
 
-    app.post("/users") { ctx -> 
-        val req = ctx.bodyAsClass(UserReqDto::class.java)
+    app.get("/users/{id}") { ctx ->
+        val id = runCatching { ctx.pathParam("id").toLong() }.getOrElse {
+            val apiError = ApiError(
+                status = 500,
+                message = "Internal Server Error: Invalid ID format",
+                path = ctx.path()
+            )
+            ctx.status(500).json(apiError)
+            return@get
+        }
+        userDb.getById(id).fold(
+            onFailure = { err ->
+                if (err is NotFoundError) {
+                    val apiError = ApiError(
+                        status = 404,
+                        message = err.message,
+                        path = ctx.path()
+                    )
+                    ctx.status(404).json(apiError)
+                }
+            },
+            onSuccess = { value: User ->
+                ctx.json(value)
+            }
+        )
+    }
+
+    app.post("/users") { ctx ->
+        val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
+        val uuid = Random.nextLong(until = 1_000)
         val user = User(
-            1,
+            uuid,
             req.username,
             req.password,
             req.email
         )
-        ctx.json(user);
+        user.isValid().fold(
+            onFailure = { error ->
+                when (error) {
+                    is ValidationError -> {
+                        val apiError = ApiError(
+                            status = 400,
+                            message = "Erro na validação",
+                            path = ctx.path(),
+                            subErrors = error.errors
+                        )
+                        ctx.status(400).json(apiError)
+                    }
+                    else -> {
+                        val apiError = ApiError(
+                            status = 500,
+                            message = "Erro interno",
+                            path = ctx.path()
+                        )
+                        ctx.status(500).json(apiError)
+                    }
+                }
+            },
+            onSuccess = {
+                println("User is valid")
+            }
+        )
+        // check if exists by email
+        if (userDb.getByEmail(user.email) != null) {
+            val apiError = ApiError(
+                status = 409,
+                message = "Businnes rule Error: E-mail already exists",
+                path = ctx.path()
+            )
+            ctx.status(409).json(apiError)
+            return@post
+        }
+        userDb.addUser(user)
+        ctx.status(201).json(user)
+    }
+
+    app.patch("/users/{id}") { ctx ->
+        val id = runCatching { ctx.pathParam("id").toLong() }.getOrElse {
+            val apiError = ApiError(
+                status = 500,
+                message = "Internal Server Error: Invalid ID format",
+                path = ctx.path()
+            )
+            ctx.status(500).json(apiError)
+            return@patch
+        }
+        val req = ctx.bodyAsClass(UserUpdateReqDto::class.java)
+        userDb.update(id, req).fold(
+            onFailure = { err ->
+                if (err is NotFoundError) {
+                    val apiError = ApiError(
+                        status = 404,
+                        message = err.message,
+                        path = ctx.path()
+                    )
+                    ctx.status(404).json(apiError)
+                }
+            },
+            onSuccess = { value: User ->
+                ctx.json(value)
+            }
+        )
+    }
+
+    app.delete("/users/{id}") { ctx ->
+        val id = runCatching { ctx.pathParam("id").toLong() }.getOrElse {
+            val apiError = ApiError(
+                status = 500,
+                message = "Internal Server Error: Invalid ID format",
+                path = ctx.path()
+            )
+            ctx.status(500).json(apiError)
+            return@delete
+        }
+        userDb.remove(id).fold(
+            onFailure = { err ->
+                if (err is NotFoundError) {
+                    val apiError = ApiError(
+                        status = 404,
+                        message = err.message,
+                        path = ctx.path()
+                    )
+                    ctx.status(404).json(apiError)
+                }
+            },
+            onSuccess = {
+                ctx.status(204)
+            }
+        )
     }
 }
