@@ -1,27 +1,36 @@
 package org.example
 
-object Database {
+interface Database {
+    fun addUser(user: User)
+    fun getAll(): List<User>
+    fun getByEmail(email: String): User?
+    fun getById(id: Long): Result<User>
+    fun update(id: Long, newData: UserUpdateReqDto): Result<User>
+    fun remove(id: Long): Result<Boolean>
+}
+
+class InMemoryDatabase : Database {
     private val db = mutableMapOf<Long, User>()
 
-    fun addUser(user: User) {
+    override fun addUser(user: User) {
         db.put(user.id, user);
     }
 
-    fun getAll(): List<User> {
+    override fun getAll(): List<User> {
         return db.values.toList()
     }
 
-    fun getByEmail(email: String): User? {
+    override fun getByEmail(email: String): User? {
         return db.values.find { it.email == email }
     }
 
-    fun getById(id: Long): Result<User> {
+    override fun getById(id: Long): Result<User> {
         return db.values.find { it.id == id }
             ?.let { return Result.success(it) }
-            ?: return Result.failure(NotFoundError("User with ID $id was not found"))
+            ?: return Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
 
-    fun update(id: Long, newData: UserUpdateReqDto): Result<User> {
+    override fun update(id: Long, newData: UserUpdateReqDto): Result<User> {
         return db.values.find { it.id == id }
             ?.apply {
                 newData.username?.let { this.username = it }
@@ -29,15 +38,15 @@ object Database {
                 newData.email?.let { this.email = it }
             }?.let {
                 Result.success(it)
-            } ?: Result.failure(NotFoundError("User with ID $id was not found"))
+            } ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
 
-    fun remove(id: Long): Result<Boolean> {
+    override fun remove(id: Long): Result<Boolean> {
         return db.values.find { it.id == id }
             ?.let {
                 db.remove(id)
                 return Result.success(true)
             }
-            ?: return Result.failure(NotFoundError("User with ID $id was not found"))
+            ?: return Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
 }

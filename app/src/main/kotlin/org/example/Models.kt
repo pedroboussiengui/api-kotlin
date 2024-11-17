@@ -29,7 +29,7 @@ class User(
                 .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
                 .map { "${it.property}: ${it.message}" }
                 .toList()
-            return Result.failure(ValidationError(listErrs))
+            return Result.failure(ApiError.ValidationError(listErrs))
         }
     }
 }
