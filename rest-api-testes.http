@@ -1,0 +1,21 @@
+### Craeate a User
+POST http://localhost:7070/users
+
+{
+    "username": "John Doe",
+    "password": "12345678",
+    "email": "john@gmail.com"
+}
+
+### Craeate a User Error
+POST http://localhost:7070/users
+
+{
+    "username": "Jo",
+    "password": "1234567",
+    "email": "johngmail.com"
+}
+
+
+### List a User
+GET http://localhost:7070/users
