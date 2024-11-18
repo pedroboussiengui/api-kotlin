@@ -31,6 +31,8 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.16") // logs
     implementation("com.google.code.gson:gson:2.11.0") // gson json mapper
     implementation("org.valiktor:valiktor-core:0.12.0") // valiktor
+    implementation("org.ktorm:ktorm-core:3.3.0") // ktorm database
+    implementation("org.xerial:sqlite-jdbc:3.41.2.1") // sqlite connector (No suitable driver found)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

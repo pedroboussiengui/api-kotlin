@@ -10,6 +10,15 @@ class UserCreateReqDto(
     val email: String
 )
 
+class UserAddressSetReqDto(
+    val cep: String,
+    val rua: String,
+    val numero: Int,
+    val bairro: String,
+    val cidade: String,
+    val estado: String
+)
+
 class UserUpdateReqDto(
     val username: String?,
     val password: String?,
@@ -18,7 +27,8 @@ class UserUpdateReqDto(
 
 fun main() {
     val mapperConfig = MapperConfig()
-    val userDb: Database = InMemoryDatabase()
+//    val userDb: UserRepository = InMemoryRepository()
+    val userDb: UserRepository = SQLiteUserRepository()
 
     val app = Javalin.create { config ->
         config.jsonMapper(mapperConfig.gsonMapper)
@@ -59,10 +69,32 @@ fun main() {
         )
     }
 
+    app.post("/users/{id}/address") { ctx ->
+        val id = ctx.validId() ?: return@post
+        val req = ctx.bodyAsClass(Address::class.java)
+        userDb.setAddress(id, req).fold(
+            onFailure = { err ->
+                if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
+                return@post
+            },
+            onSuccess = { updatedUser -> updatedUser.isValid().fold(
+                onFailure = { err ->
+                    if (err is ApiError.ValidationError) {
+                        ctx.handleError(HttpStatus.BAD_REQUEST, "Validation error", err.errors)
+                        return@post
+                    }
+                    ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: ${err.message}")
+                    return@post
+                },
+                onSuccess = { ctx.json(updatedUser) }
+            ) }
+        )
+    }
+
     app.post("/users") { ctx ->
         val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
         val uuid = Random.nextLong(until = 1_000)
-        val user = User(uuid, req.username, req.password, req.email)
+        val user = User(uuid, req.username, req.password, req.email, null)
 
         user.isValid().fold(
             onFailure = { err ->

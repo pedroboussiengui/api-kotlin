@@ -1,15 +1,16 @@
 package org.example
 
-interface Database {
+interface UserRepository {
     fun addUser(user: User)
     fun getAll(): List<User>
     fun getByEmail(email: String): User?
     fun getById(id: Long): Result<User>
     fun update(id: Long, newData: UserUpdateReqDto): Result<User>
     fun remove(id: Long): Result<Boolean>
+    fun setAddress(id: Long, address: Address): Result<User>
 }
 
-class InMemoryDatabase : Database {
+class InMemoryRepository : UserRepository {
     private val db = mutableMapOf<Long, User>()
 
     override fun addUser(user: User) {
@@ -48,5 +49,14 @@ class InMemoryDatabase : Database {
                 return Result.success(true)
             }
             ?: return Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
+    }
+
+    override fun setAddress(id: Long, address: Address): Result<User> {
+        return db.values.find { it.id == id }
+            ?.apply {
+                this.address = address
+            }?.let {
+                Result.success(it)
+            } ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
 }
