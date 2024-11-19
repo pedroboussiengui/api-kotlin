@@ -2,6 +2,11 @@ package org.example
 
 import io.javalin.Javalin
 import io.javalin.http.Context
+import org.example.posts.Post
+import org.example.posts.PostRepository1
+import org.example.users.Address
+import org.example.users.User
+import org.example.users.UserRepository
 import kotlin.random.Random
 
 class UserCreateReqDto(
@@ -25,10 +30,16 @@ class UserUpdateReqDto(
     val email: String?
 )
 
+class PostReqDto(
+    val title: String,
+    val content: String
+)
+
 fun main() {
     val mapperConfig = MapperConfig()
 //    val userDb: UserRepository = InMemoryRepository()
     val userDb: UserRepository = SQLiteUserRepository()
+    val postDb: PostRepository1 = SQLitePostRepository()
 
     val app = Javalin.create { config ->
         config.jsonMapper(mapperConfig.gsonMapper)
@@ -54,6 +65,14 @@ fun main() {
         }
     }
 
+    fun Context.conextUser(): Long? {
+        return this.header("User")?.toLongOrNull()
+                ?: run {
+                    this.handleError(HttpStatus.UNAUTHORIZED, "User is not authenticated or invalid")
+                    return null
+                }
+    }
+
     app.get("/users") { ctx ->
         val users = userDb.getAll()
         ctx.json(users)
@@ -72,6 +91,7 @@ fun main() {
     app.post("/users/{id}/address") { ctx ->
         val id = ctx.validId() ?: return@post
         val req = ctx.bodyAsClass(Address::class.java)
+
         userDb.setAddress(id, req).fold(
             onFailure = { err ->
                 if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
@@ -140,5 +160,30 @@ fun main() {
             },
             onSuccess = { ctx.status(204) }
         )
+    }
+
+    app.post("/posts") { ctx ->
+        // get the user id from the header
+        val owner = ctx.conextUser() ?: return@post
+        // get dto as body request
+        val req = ctx.bodyAsClass(PostReqDto::class.java)
+        // create a new post for tht user
+        val post = Post(req.title, req.content, owner)
+        // valid the post
+        post.isValid().onFailure { err ->
+            if (err is ApiError.ValidationError) {
+                ctx.handleError(HttpStatus.BAD_REQUEST, "Validation error", err.errors)
+                return@post
+            }
+        }
+        // persist in db
+        val createdPostId = postDb.create(post).getOrElse { err ->
+            if (err is ApiError.NotFoundError) {
+                ctx.handleError(HttpStatus.NOT_FOUND, err.message)
+                return@post
+            }
+        }
+        // response to client
+        ctx.json(createdPostId)
     }
 }

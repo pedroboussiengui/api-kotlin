@@ -1,4 +1,7 @@
-package org.example
+package org.example.users
+
+import org.example.ApiError
+import org.example.UserUpdateReqDto
 
 interface UserRepository {
     fun addUser(user: User)

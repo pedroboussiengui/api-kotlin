@@ -1,5 +1,6 @@
-package org.example
+package org.example.users
 
+import org.example.ApiError
 import org.valiktor.ConstraintViolationException
 import org.valiktor.functions.*
 import org.valiktor.i18n.mapToMessage
