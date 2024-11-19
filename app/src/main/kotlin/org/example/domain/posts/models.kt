@@ -1,7 +1,7 @@
-package org.example.posts
+package org.example.domain.posts
 
 import org.example.ApiError
-import org.example.users.User
+import org.example.domain.users.User
 import org.valiktor.ConstraintViolationException
 import org.valiktor.functions.hasSize
 import org.valiktor.functions.isNotBlank

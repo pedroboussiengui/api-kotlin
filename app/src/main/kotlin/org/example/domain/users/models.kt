@@ -1,4 +1,4 @@
-package org.example.users
+package org.example.domain.users
 
 import org.example.ApiError
 import org.valiktor.ConstraintViolationException
