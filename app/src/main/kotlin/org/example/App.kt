@@ -2,13 +2,16 @@ package org.example
 
 import io.javalin.Javalin
 import io.javalin.http.Context
+import org.example.application.usecases.UpdateUserUseCase
+import org.example.application.usecases.UseCaseResult
 import org.example.domain.posts.Post
 import org.example.domain.posts.PostRepository
 import org.example.domain.users.Address
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
-import org.example.infra.repository.SQLitePostRepository
-import org.example.infra.repository.SQLiteUserRepository
+import org.example.infra.http.controllers.UserController
+import org.example.infra.sqlite.repositories.SQLitePostRepository
+import org.example.infra.sqlite.repositories.SQLiteUserRepository
 import kotlin.random.Random
 
 class UserCreateReqDto(
@@ -24,11 +27,6 @@ class UserAddressSetReqDto(
     val bairro: String,
     val cidade: String,
     val estado: String
-)
-
-class UserUpdateReqDto(
-    val username: String?,
-    val email: String?
 )
 
 class PostReqDto(
@@ -73,10 +71,7 @@ fun main() {
                 }
     }
 
-    app.get("/users") { ctx ->
-        val users = userDb.getAll()
-        ctx.json(users)
-    }
+    app.get("/users", UserController::getAll)
 
     app.get("/users/{id}") { ctx ->
         val id = ctx.validId() ?: return@get
@@ -137,38 +132,61 @@ fun main() {
         ctx.status(201).json(user)
     }
 
-    app.patch("/users/{id}") { ctx ->
-        val id = ctx.validId() ?: return@patch
-        val req = ctx.bodyAsClass(UserUpdateReqDto::class.java)
-        // busca usuario pelo id, garantindo que ele existe
-        val user: User = userDb.getById(id).getOrElse { err ->
-            if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
-            return@patch
-        }
-        // atribuo os campos e não forem null
-        req.username?.let { user.username = it }
-        req.email?.let { user.email = it }
+//    app.patch("/users/{id}") { ctx ->
+//        val id = ctx.validId() ?: return@patch
+//        val req = ctx.bodyAsClass(UserUpdateReqDto::class.java)
+//
+//        val updateUserUseCase = UpdateUserUseCase()
+//        when (val res = updateUserUseCase.execute(id, req)) {
+//            is UseCaseResult.Success -> {
+//                ctx.json(res.data)
+//            }
+//            is UseCaseResult.BusinessRuleError -> {
+//                ctx.handleError(HttpStatus.CONFLICT, res.message)
+//            }
+//            is UseCaseResult.NotFoundError -> {
+//                ctx.handleError(HttpStatus.NOT_FOUND, res.message)
+//            }
+//            is UseCaseResult.ValidationError -> {
+//                ctx.handleError(HttpStatus.BAD_REQUEST, "Validation error", res.errors)
+//            }
+//        }
+//    }
 
-        // email não pode existir
-        if (userDb.existsByEmail(user.email)) {
-            ctx.handleError(HttpStatus.CONFLICT, "Business rule error: E-mail already exists")
-            return@patch
-        }
+    app.patch("/users/{id}", UserController::update)
 
-        // valido o user com os dados novos
-        user.isValid().onFailure { err ->
-            if (err is ApiError.ValidationError) {
-                ctx.handleError(HttpStatus.BAD_REQUEST, "Validation error", err.errors)
-                return@patch
-            }
-        }
-        // caso sucesso, ele atualiza com os dados existentes
-        val updatedUserId: Long = userDb.update(id, user).getOrElse { err ->
-            if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
-            return@patch
-        }
-        ctx.json(updatedUserId)
-    }
+//    app.patch("/users/{id}") { ctx ->
+//        val id = ctx.validId() ?: return@patch
+//        val req = ctx.bodyAsClass(UserUpdateReqDto::class.java)
+//        // busca usuario pelo id, garantindo que ele existe
+//        val user: User = userDb.getById(id).getOrElse { err ->
+//            if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
+//            return@patch
+//        }
+//        // atribuo os campos e não forem null
+//        req.username?.let { user.username = it }
+//        req.email?.let { user.email = it }
+//
+//        // email não pode existir
+//        if (userDb.existsByEmail(user.email)) {
+//            ctx.handleError(HttpStatus.CONFLICT, "Business rule error: E-mail already exists")
+//            return@patch
+//        }
+//
+//        // valido o user com os dados novos
+//        user.isValid().onFailure { err ->
+//            if (err is ApiError.ValidationError) {
+//                ctx.handleError(HttpStatus.BAD_REQUEST, "Validation error", err.errors)
+//                return@patch
+//            }
+//        }
+//        // caso sucesso, ele atualiza com os dados existentes
+//        val updatedUserId: Long = userDb.update(id, user).getOrElse { err ->
+//            if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
+//            return@patch
+//        }
+//        ctx.json(updatedUserId)
+//    }
 
     app.delete("/users/{id}") { ctx ->
         val id = ctx.validId() ?: return@delete

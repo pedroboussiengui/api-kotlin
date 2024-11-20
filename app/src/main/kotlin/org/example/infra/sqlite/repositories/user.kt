@@ -1,10 +1,12 @@
-package org.example.infra.repository
+package org.example.infra.sqlite.repositories
 
 import org.example.ApiError
 import org.example.domain.users.Address
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
-import org.example.infra.*
+import org.example.infra.sqlite.UserDb
+import org.example.infra.sqlite.Users
+import org.example.infra.sqlite.initDatabase
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 
@@ -54,6 +56,17 @@ class SQLiteUserRepository : UserRepository {
                     Result.success(it.id)
                 } ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
+
+//    override fun update1(id: Long, newUser: User): Long {
+//        return database.sequenceOf(Users).find { it.id eq id }
+//                .apply {
+//                    newUser.username.let { this.username = it }
+//                    newUser.email.let { this.email = it }
+//                    this.flushChanges()
+//                }.let {
+//                    it.id
+//                }
+//    }
 
     override fun remove(id: Long): Result<Boolean> {
         return database.sequenceOf(Users).find { it.id eq id }
