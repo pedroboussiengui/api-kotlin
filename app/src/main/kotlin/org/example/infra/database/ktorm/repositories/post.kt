@@ -20,6 +20,7 @@ class SQLitePostRepository : PostRepository {
         if (user == null) return Result.failure(ApiError.NotFoundError("Owner with ID ${post.owner} was not found!"))
 
         val insertedPostId = database.sequenceOf(Posts).add(PostDb {
+            id = post.id
             title = post.title
             content = post.content
             timestamp = post.timestamp

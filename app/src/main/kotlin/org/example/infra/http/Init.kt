@@ -1,6 +1,7 @@
 package org.example.infra.http
 
 import io.javalin.Javalin
+import org.example.infra.http.controllers.PostController
 import org.example.infra.http.controllers.UserController
 
 fun init() {
@@ -21,6 +22,8 @@ fun init() {
     app.delete("/users/{id}", UserController::remove)
 
     app.post("/users/{id}/address", UserController::setAddress)
+
+    app.post("/posts", PostController::create)
 
     app.start(7070)
 }

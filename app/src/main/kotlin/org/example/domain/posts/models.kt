@@ -2,21 +2,19 @@ package org.example.domain.posts
 
 import org.example.domain.DomainExceptions
 import org.valiktor.ConstraintViolationException
-import org.valiktor.functions.hasSize
-import org.valiktor.functions.isNotBlank
-import org.valiktor.functions.isNotNull
-import org.valiktor.functions.isPositiveOrZero
+import org.valiktor.functions.*
 import org.valiktor.i18n.mapToMessage
 import org.valiktor.validate
 import java.time.LocalDateTime
 import java.util.*
 
 class Post(
+    var id: Long,
     var title: String,
     var content: String,
     var owner: Long
 ) {
-    var id: Long? = null    // post is created without id, it's defined in database
+    //var id: Long? = null    // post is created without id, it's defined in database
     var timestamp: String = LocalDateTime.now().toString()  // timestamp when it is created
     var likes: Int = 0      // like number is 0 obviously
     var isPrivate: Boolean = false // is not private by default
@@ -30,7 +28,7 @@ class Post(
             likes: Int,
             isPrivate: Boolean,
             owner: Long
-    ) : this(title, content, owner) {
+    ) : this(id, title, content, owner) {
         this.id = id
         this.timestamp = timestamp
         this.likes = likes
@@ -40,6 +38,7 @@ class Post(
     fun isValid(): Result<Boolean> {
         try {
             validate(this) {
+                validate(Post::id).isPositive()
                 validate(Post::title).hasSize(min = 3, max = 80)
                 validate(Post::content).isNotBlank()
                 validate(Post::timestamp).isNotNull()

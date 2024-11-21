@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Assertions.*
 class PostTest {
     @Test
     fun test_instantiatePost_success() {
-        val post = Post("Meu post", "o conteúdo do meu post", 1)
+        val post = Post(1, "Meu post", "o conteúdo do meu post", 1)
         val result = post.isValid()
         assertTrue(result.isSuccess)
-        assertNull(post.id)
+        assertNotNull(post.id)
         assertNotNull(post.timestamp)
         assertEquals(0, post.likes)
         assertFalse(post.isPrivate)
@@ -18,14 +18,14 @@ class PostTest {
 
     @Test
     fun test_instantiatePost_fail() {
-        val post = Post("Me", "", 1)
+        val post = Post(1, "Me", "", 1)
         val result = post.isValid()
         assertTrue(result.isFailure)
     }
 
     @Test
     fun test_likePost() {
-        val post = Post("Meu post", "o conteúdo do meu post", 1)
+        val post = Post(1, "Meu post", "o conteúdo do meu post", 1)
         assertEquals(0, post.likes)
         post.likePost()
         assertEquals(1, post.likes)
@@ -35,7 +35,7 @@ class PostTest {
 
     @Test
     fun toggleIsPrivate() {
-        val post = Post("Meu post", "o conteúdo do meu post", 1)
+        val post = Post(1, "Meu post", "o conteúdo do meu post", 1)
         assertFalse(post.isPrivate)
         post.toggleIsPrivate()
         assertTrue(post.isPrivate)

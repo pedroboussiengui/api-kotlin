@@ -34,7 +34,7 @@ object Users : Table<UserDb>("users_tb") {
 interface PostDb : Entity<PostDb> {
     companion object : Entity.Factory<PostDb>()
 
-    val id: Long
+    var id: Long
     var title: String
     var content: String
     var timestamp: String
@@ -50,5 +50,5 @@ object Posts : Table<PostDb>("posts_tb") {
     val timestamp = varchar("timestamp").bindTo { it.timestamp }
     val likes = int("likes").bindTo { it.likes }
     val isPrivate = boolean("is_private").bindTo { it.isPrivate }
-    val owner = long("user_id").references(Users) { it.owner }.bindTo { it.id }
+    val userId = long("user_id").bindTo { it.owner.id }
 }
