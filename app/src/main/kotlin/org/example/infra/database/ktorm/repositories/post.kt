@@ -47,6 +47,22 @@ class SQLitePostRepository : PostRepository {
         return posts
     }
 
+    override fun getAllByOwner(owner: Long): List<Post> {
+        val posts = mutableListOf<Post>()
+        database.sequenceOf(Posts).filter { it.userId eq owner }.forEach{
+            posts.add(Post(
+                    id = it.id,
+                    title = it.title,
+                    content = it.content,
+                    timestamp = it.timestamp,
+                    likes = it.likes,
+                    isPrivate = it.isPrivate,
+                    owner = it.owner.id
+            ))
+        }
+        return posts
+    }
+
     override fun getById(id: Long): Result<Post> {
         return database.sequenceOf(Posts).find { it.id eq id }
                 ?.let {

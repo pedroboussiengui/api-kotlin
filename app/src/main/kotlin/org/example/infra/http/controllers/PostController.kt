@@ -3,6 +3,7 @@ package org.example.infra.http.controllers
 import io.javalin.http.Context
 import org.example.application.UseCaseResult
 import org.example.application.usecases.CreatePostUseCase
+import org.example.application.usecases.GetPostsByUserUseCase
 import org.example.application.usecases.PostCreateReqDto
 import org.example.infra.database.ktorm.repositories.SQLitePostRepository
 import org.example.infra.http.HttpStatus
@@ -25,5 +26,13 @@ object PostController {
             }
         }
 
+    }
+
+    fun getPostByUsers(ctx: Context) {
+        val owner = ctx.contextUser() ?: return
+
+        val getPostByUserUseCase = GetPostsByUserUseCase(SQLitePostRepository())
+        val res = getPostByUserUseCase.execute(owner)
+        ctx.json(res)
     }
 }

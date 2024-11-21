@@ -25,5 +25,7 @@ fun init() {
 
     app.post("/posts", PostController::create)
 
+    app.get("/posts", PostController::getPostByUsers)
+
     app.start(7070)
 }
