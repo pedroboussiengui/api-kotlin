@@ -1,26 +1,9 @@
 package org.example
 
-import io.javalin.Javalin
-import org.example.infra.http.controllers.UserController
+import org.example.infra.http.init
 
 fun main() {
-    val mapperConfig = MapperConfig()
-
-    val app = Javalin.create { config ->
-        config.jsonMapper(mapperConfig.gsonMapper)
-    }.start(7070)
-
-    app.get("/users", UserController::getAll)
-
-    app.post("/users", UserController::add)
-
-    app.get("/users/{id}", UserController::getById)
-
-    app.patch("/users/{id}", UserController::update)
-
-    app.delete("/users/{id}", UserController::remove)
-
-    app.post("/users/{id}/address", UserController::setAddress)
+    init()
 
 //    app.post("/posts") { ctx ->
 //        // get the user id from the header

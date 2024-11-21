@@ -1,4 +1,4 @@
-package org.example;
+package org.example.infra.http;
 
 import com.google.gson.GsonBuilder
 import io.javalin.json.JsonMapper

@@ -1,32 +1,13 @@
 package org.example.infra.http.controllers
 
 import io.javalin.http.Context
-import org.example.ApiErrorResponse
 import org.example.HttpStatus
 import org.example.application.usecases.*
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
+import org.example.infra.http.controllers.ContextHelpers.handleError
+import org.example.infra.http.controllers.ContextHelpers.validId
 
 object UserController {
-
-    // Helper para validação de ID
-    private fun Context.validId(): Long? {
-        return runCatching { this.pathParam("id").toLong() }.getOrNull().also {
-            if (it == null) {
-                this.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "${HttpStatus.INTERNAL_SERVER_ERROR}: Invalid ID format")
-            }
-        }
-    }
-
-    // Helper para lidar com erros
-    private fun Context.handleError(httpStatus: HttpStatus, message: String, subErrors: Any? = null) {
-        val apiError = ApiErrorResponse(
-                status = httpStatus.code,
-                message = message,
-                path = this.path(),
-                subErrors = subErrors
-        )
-        this.status(httpStatus.code).json(apiError)
-    }
 
     fun add(ctx: Context) {
         val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
