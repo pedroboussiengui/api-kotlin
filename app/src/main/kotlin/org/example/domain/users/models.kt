@@ -1,6 +1,6 @@
 package org.example.domain.users
 
-import org.example.ApiError
+import org.example.domain.DomainExceptions
 import org.valiktor.ConstraintViolationException
 import org.valiktor.functions.*
 import org.valiktor.i18n.mapToMessage
@@ -43,7 +43,7 @@ class User(
                 .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
                 .map { "${it.property}: ${it.message}" }
                 .toList()
-            return Result.failure(ApiError.ValidationError(listErrs))
+            return Result.failure(DomainExceptions.ValidationError(listErrs))
         }
     }
 }

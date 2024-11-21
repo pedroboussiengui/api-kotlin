@@ -1,6 +1,6 @@
 package org.example.infra.database.ktorm.repositories
 
-import org.example.ApiError
+import org.example.infra.http.ApiError
 import org.example.domain.users.Address
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository

@@ -1,6 +1,7 @@
 package org.example.application.usecases
 
-import org.example.ApiError
+import org.example.application.UseCaseResult
+import org.example.domain.DomainExceptions
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
 import kotlin.random.Random
@@ -29,7 +30,7 @@ class AddUserUseCase(
         }
 
         user.isValid().onFailure {err ->
-            if (err is ApiError.ValidationError) return UseCaseResult.ValidationError(err.errors)
+            if (err is DomainExceptions.ValidationError) return UseCaseResult.ValidationError(err.errors)
         }
 
         userRepository.addUser(user)

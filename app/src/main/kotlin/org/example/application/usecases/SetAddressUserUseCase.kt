@@ -1,6 +1,7 @@
 package org.example.application.usecases
 
-import org.example.ApiError
+import org.example.application.UseCaseResult
+import org.example.domain.DomainExceptions
 import org.example.domain.users.Address
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
@@ -34,7 +35,7 @@ class SetAddressUserUseCase(
                 }
         )
         user.isValid().onFailure {err ->
-            if (err is ApiError.ValidationError) return UseCaseResult.ValidationError(err.errors)
+            if (err is DomainExceptions.ValidationError) return UseCaseResult.ValidationError(err.errors)
         }
         return UseCaseResult.Success(user)
     }

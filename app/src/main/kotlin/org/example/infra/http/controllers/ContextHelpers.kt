@@ -1,8 +1,8 @@
 package org.example.infra.http.controllers
 
 import io.javalin.http.Context
-import org.example.ApiErrorResponse
-import org.example.HttpStatus
+import org.example.infra.http.ApiErrorResponse
+import org.example.infra.http.HttpStatus
 
 object ContextHelpers {
 

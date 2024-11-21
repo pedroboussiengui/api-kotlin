@@ -1,9 +1,11 @@
 package org.example.domain.posts
 
-import org.example.ApiError
-import org.example.domain.users.User
+import org.example.domain.DomainExceptions
 import org.valiktor.ConstraintViolationException
-import org.valiktor.functions.*
+import org.valiktor.functions.hasSize
+import org.valiktor.functions.isNotBlank
+import org.valiktor.functions.isNotNull
+import org.valiktor.functions.isPositiveOrZero
 import org.valiktor.i18n.mapToMessage
 import org.valiktor.validate
 import java.time.LocalDateTime
@@ -51,7 +53,7 @@ class Post(
                     .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
                     .map { "${it.property}: ${it.message}" }
                     .toList()
-            return Result.failure(ApiError.ValidationError(listErrs))
+            return Result.failure(DomainExceptions.ValidationError(listErrs))
         }
     }
 

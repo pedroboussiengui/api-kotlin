@@ -1,4 +1,4 @@
-package org.example
+package org.example.infra.http
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter
 val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")
 
 data class ApiErrorResponse(
-    val status: Int,
-    val message: String,
-    val timestamp: String = LocalDateTime.now().format(formatter).toString(),
-    val path: String? = null,
-    val subErrors: Any? = null
+        val status: Int,
+        val message: String,
+        val timestamp: String = LocalDateTime.now().format(formatter).toString(),
+        val path: String? = null,
+        val subErrors: Any? = null
 )
 
 enum class HttpStatus(val code: Int, val message: String) {

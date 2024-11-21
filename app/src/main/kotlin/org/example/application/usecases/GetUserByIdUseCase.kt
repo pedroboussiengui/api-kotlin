@@ -1,5 +1,6 @@
 package org.example.application.usecases
 
+import org.example.application.UseCaseResult
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
 
