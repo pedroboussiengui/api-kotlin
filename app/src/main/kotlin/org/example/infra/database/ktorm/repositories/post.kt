@@ -1,12 +1,12 @@
-package org.example.infra.sqlite.repositories
+package org.example.infra.database.ktorm.repositories
 
 import org.example.ApiError
 import org.example.domain.posts.Post
 import org.example.domain.posts.PostRepository
-import org.example.infra.sqlite.PostDb
-import org.example.infra.sqlite.Posts
-import org.example.infra.sqlite.Users
-import org.example.infra.sqlite.initDatabase
+import org.example.infra.database.ktorm.PostDb
+import org.example.infra.database.ktorm.Posts
+import org.example.infra.database.ktorm.Users
+import org.example.infra.database.sqlite.initDatabase
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 

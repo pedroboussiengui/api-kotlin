@@ -1,10 +1,9 @@
 package org.example.application.usecases
 
 import org.example.domain.users.UserRepository
-import org.example.infra.sqlite.repositories.SQLiteUserRepository
 
 class RemoveUseUseCase(
-        private val userDb: UserRepository = SQLiteUserRepository()
+        private val userDb: UserRepository
 ) {
     fun execute(id: Long): UseCaseResult<Any> {
         val status: Boolean = userDb.remove(id).fold(

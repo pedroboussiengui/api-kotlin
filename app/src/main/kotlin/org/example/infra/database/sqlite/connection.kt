@@ -1,4 +1,4 @@
-package org.example.infra.sqlite
+package org.example.infra.database.sqlite
 
 import org.ktorm.database.Database
 

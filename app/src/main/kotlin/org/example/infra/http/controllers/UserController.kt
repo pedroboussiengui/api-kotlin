@@ -4,7 +4,7 @@ import io.javalin.http.Context
 import org.example.ApiErrorResponse
 import org.example.HttpStatus
 import org.example.application.usecases.*
-import org.example.infra.sqlite.repositories.SQLiteUserRepository
+import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 
 object UserController {
 
@@ -55,7 +55,7 @@ object UserController {
 
     fun getById(ctx: Context) {
         val id = ctx.validId() ?: return
-        val getUserByIdUseCase = GetUserByIdUseCase()
+        val getUserByIdUseCase = GetUserByIdUseCase(SQLiteUserRepository())
         when (val res = getUserByIdUseCase.execute(id)) {
             is UseCaseResult.Success -> {
                 ctx.json(res.data)
@@ -73,7 +73,7 @@ object UserController {
         val id = ctx.validId() ?: return
         val req = ctx.bodyAsClass(UserUpdateReqDto::class.java)
 
-        val updateUserUseCase = UpdateUserUseCase()
+        val updateUserUseCase = UpdateUserUseCase(SQLiteUserRepository())
         when (val res = updateUserUseCase.execute(id, req)) {
             is UseCaseResult.Success -> {
                 ctx.json(res.data)
@@ -93,7 +93,7 @@ object UserController {
     fun remove(ctx: Context) {
         val id = ctx.validId() ?: return
 
-        val removeUserUseCase = RemoveUseUseCase()
+        val removeUserUseCase = RemoveUseUseCase(SQLiteUserRepository())
         when (val res = removeUserUseCase.execute(id)) {
             is UseCaseResult.Success -> {
                 ctx.json(res.data)

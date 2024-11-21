@@ -3,7 +3,6 @@ package org.example.application.usecases
 import org.example.ApiError
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
-import org.example.infra.sqlite.repositories.SQLiteUserRepository
 
 class UserUpdateReqDto(
     val username: String?,
@@ -18,7 +17,7 @@ sealed class UseCaseResult<out T> {
 }
 
 class UpdateUserUseCase(
-        private val userDb: UserRepository = SQLiteUserRepository()
+        private val userDb: UserRepository
 ) {
     fun execute(id: Long, input: UserUpdateReqDto): UseCaseResult<Any> {
         val user: User = userDb.getById(id).fold(
