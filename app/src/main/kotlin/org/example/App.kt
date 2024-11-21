@@ -73,15 +73,7 @@ fun main() {
 
     app.get("/users", UserController::getAll)
 
-    app.get("/users/{id}") { ctx ->
-        val id = ctx.validId() ?: return@get
-        userDb.getById(id).fold(
-            onFailure = { err ->
-                if (err is ApiError.NotFoundError) ctx.handleError(HttpStatus.NOT_FOUND, err.message)
-            },
-            onSuccess = { user -> ctx.json(user) }
-        )
-    }
+    app.get("/users/{id}", UserController::getById)
 
     app.post("/users/{id}/address") { ctx ->
         val id = ctx.validId() ?: return@post

@@ -3,10 +3,7 @@ package org.example.domain.posts
 import org.example.ApiError
 import org.example.domain.users.User
 import org.valiktor.ConstraintViolationException
-import org.valiktor.functions.hasSize
-import org.valiktor.functions.isNotBlank
-import org.valiktor.functions.isNotNull
-import org.valiktor.functions.isPositive
+import org.valiktor.functions.*
 import org.valiktor.i18n.mapToMessage
 import org.valiktor.validate
 import java.time.LocalDateTime
@@ -41,11 +38,10 @@ class Post(
     fun isValid(): Result<Boolean> {
         try {
             validate(this) {
-                validate(Post::id).isNotNull()
                 validate(Post::title).hasSize(min = 3, max = 80)
                 validate(Post::content).isNotBlank()
                 validate(Post::timestamp).isNotNull()
-                validate(Post::likes).isPositive()
+                validate(Post::likes).isPositiveOrZero()
                 validate(Post::isPrivate).isNotNull()
                 validate(Post::owner).isNotNull() // post cannot be without user owner
             }
