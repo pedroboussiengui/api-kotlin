@@ -29,7 +29,12 @@ class User(
                     validate(Address::numero).isPositive()
                     validate(Address::bairro).isNotEmpty()
                     validate(Address::cidade).isNotEmpty()
-                    validate(Address::estado).isIn(listOf("RN","CE","PB","PE"))
+                    validate(Address::estado).isIn(listOf(
+                            "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES",
+                            "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
+                            "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+                            "SP", "SE", "TO"
+                    ))
                 }
             }
             return Result.success(true)

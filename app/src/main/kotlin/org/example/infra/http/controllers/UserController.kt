@@ -4,6 +4,7 @@ import io.javalin.http.Context
 import org.example.ApiErrorResponse
 import org.example.HttpStatus
 import org.example.application.usecases.*
+import org.example.infra.sqlite.repositories.SQLiteUserRepository
 
 object UserController {
 
@@ -28,11 +29,26 @@ object UserController {
     }
 
     fun add(ctx: Context) {
-        //TODO
+        val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
+        val addUserUseCase = AddUserUseCase(SQLiteUserRepository())
+        when (val res = addUserUseCase.execute(req)) {
+            is UseCaseResult.Success -> {
+                ctx.status(201).json(res.data)
+            }
+            is UseCaseResult.BusinessRuleError -> {
+                ctx.handleError(HttpStatus.CONFLICT, message = res.message)
+            }
+            is UseCaseResult.ValidationError -> {
+                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
+            }
+            else -> {
+                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            }
+        }
     }
 
     fun getAll(ctx: Context) {
-        val getAllUsersUserUseCase = GetAllUsersUseCase()
+        val getAllUsersUserUseCase = GetAllUsersUseCase(SQLiteUserRepository())
         val res = getAllUsersUserUseCase.execute()
         ctx.json(res)
     }
@@ -92,6 +108,23 @@ object UserController {
     }
 
     fun setAddress(ctx: Context) {
-        //TODO
+        val id = ctx.validId() ?: return
+        val req = ctx.bodyAsClass(UserAddressReqDto::class.java)
+
+        val setAddressUserUseCase = SetAddressUserUseCase(SQLiteUserRepository())
+        when (val res = setAddressUserUseCase.execute(id, req)) {
+            is UseCaseResult.Success -> {
+                ctx.json(res.data)
+            }
+            is UseCaseResult.NotFoundError -> {
+                ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
+            }
+            is UseCaseResult.ValidationError -> {
+                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
+            }
+            else -> {
+                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            }
+        }
     }
 }
