@@ -6,12 +6,12 @@ import org.example.domain.posts.PostRepository
 import org.example.infra.database.ktorm.PostDb
 import org.example.infra.database.ktorm.Posts
 import org.example.infra.database.ktorm.Users
-import org.example.infra.database.sqlite.initDatabase
+import org.example.infra.database.sqlite.DatabaseSingleton
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 
 class SQLitePostRepository : PostRepository {
-    private val database = initDatabase()
+    private val database = DatabaseSingleton.database
 
     override fun create(post: Post): Result<Long> {
         val user = database.sequenceOf(Users)
