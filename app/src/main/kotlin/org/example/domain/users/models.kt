@@ -14,6 +14,7 @@ class User(
     var username: String,
     var password: String,
     var email: String,
+    var type: UserType,
     var address: Address?
 ) {
     fun isValid(): Result<Boolean> {
@@ -23,6 +24,7 @@ class User(
                 validate(User::username).hasSize(min = 3, max = 80)
                 validate(User::password).hasSize(min = 8).matches(Regex("^[a-zA-Z0-9]*$"))
                 validate(User::email).isEmail()
+                validate(User::type).isIn(UserType.entries)
                 validate(User::address).validate {
                     validate(Address::cep).isNotEmpty().matches(Regex("^\\d{5}-?\\d{3}\$"))
                     validate(Address::rua).isNotEmpty()
@@ -56,3 +58,7 @@ class Address(
     val cidade: String,
     val estado: String
 )
+
+enum class UserType {
+    USER, MODERATOR
+}

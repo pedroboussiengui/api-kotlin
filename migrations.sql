@@ -23,10 +23,12 @@
 --    user_id INTEGER,
 --    FOREIGN KEY (user_id) REFERENCES users_tb (id)
 --);
+--
+--ALTER TABLE users_tb RENAME COLUMN cep TO address_cep;
+--ALTER TABLE users_tb RENAME COLUMN rua TO address_rua;
+--ALTER TABLE users_tb RENAME COLUMN numero TO address_numero;
+--ALTER TABLE users_tb RENAME COLUMN bairro TO address_bairro;
+--ALTER TABLE users_tb RENAME COLUMN cidade TO address_cidade;
+--ALTER TABLE users_tb RENAME COLUMN estado TO address_estado;
 
-ALTER TABLE users_tb RENAME COLUMN cep TO address_cep;
-ALTER TABLE users_tb RENAME COLUMN rua TO address_rua;
-ALTER TABLE users_tb RENAME COLUMN numero TO address_numero;
-ALTER TABLE users_tb RENAME COLUMN bairro TO address_bairro;
-ALTER TABLE users_tb RENAME COLUMN cidade TO address_cidade;
-ALTER TABLE users_tb RENAME COLUMN estado TO address_estado;
+--ALTER TABLE users_tb ADD COLUMN type TEXT DEFAULT 'USER';

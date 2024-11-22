@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f2c8c7d9-213c-424d-85f8-24512587e4f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/PostController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/PostController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/orm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/orm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/repositories/user.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/repositories/user.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migrations.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,8 +47,8 @@
       <list>
         <option value="Kotlin Object" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Kotlin File" />
+        <option value="Class" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -60,34 +63,35 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build api-kotlin.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PostTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PostTest.test_instantiatePost_fail (1).executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PostTest.test_instantiatePost_fail.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.PostTest.test_instantiatePost_success.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PostTest.test_likePost.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.AppKt.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/neuromancer/Dev/api-kotlin&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build api-kotlin.executor": "Run",
+    "Gradle.PostTest.executor": "Run",
+    "Gradle.PostTest.test_instantiatePost_fail (1).executor": "Run",
+    "Gradle.PostTest.test_instantiatePost_fail.executor": "Debug",
+    "Gradle.PostTest.test_instantiatePost_success.executor": "Run",
+    "Gradle.PostTest.test_likePost.executor": "Run",
+    "Gradle.UserTest.test_instantiateUser_success.executor": "Run",
+    "Kotlin.AppKt.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/neuromancer/Dev/api-kotlin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http" />
@@ -156,30 +160,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostTest.test_instantiatePost_success" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":app:test" />
-            <option value="--tests" />
-            <option value="&quot;org.example.domain.PostTest.test_instantiatePost_success&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="PostTest.test_likePost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -204,6 +184,30 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="UserTest.test_instantiateUser_success" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":app:test" />
+            <option value="--tests" />
+            <option value="&quot;org.example.domain.posts.UserTest.test_instantiateUser_success&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="AppKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.AppKt" />
       <module name="api-kotlin.app.main" />
@@ -214,10 +218,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Kotlin.AppKt" />
+        <item itemvalue="Gradle.UserTest.test_instantiateUser_success" />
         <item itemvalue="Gradle.PostTest" />
         <item itemvalue="Gradle.PostTest.test_likePost" />
         <item itemvalue="Gradle.PostTest.test_instantiatePost_fail (1)" />
-        <item itemvalue="Gradle.PostTest.test_instantiatePost_success" />
       </list>
     </recent_temporary>
   </component>

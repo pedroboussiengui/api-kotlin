@@ -4,6 +4,7 @@ import org.example.infra.http.ApiError
 import org.example.domain.users.Address
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
+import org.example.domain.users.UserType
 import org.example.infra.database.ktorm.UserDb
 import org.example.infra.database.ktorm.Users
 import org.example.infra.database.sqlite.DatabaseSingleton
@@ -88,6 +89,7 @@ class SQLiteUserRepository : UserRepository {
                 username = userDb.username,
                 password = userDb.password,
                 email = userDb.email,
+                type = UserType.valueOf(userDb.type),
                 address = if (!isAddressNull(userDb)) {
                     Address(
                             cep = userDb.cep!!,
@@ -116,6 +118,7 @@ class SQLiteUserRepository : UserRepository {
             username = user.username
             password = user.password
             email = user.email
+            type = user.type.toString()
             cep = user.address?.cep
             rua = user.address?.rua
             numero = user.address?.numero

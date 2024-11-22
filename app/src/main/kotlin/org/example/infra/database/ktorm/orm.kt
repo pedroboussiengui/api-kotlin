@@ -10,6 +10,7 @@ interface UserDb : Entity<UserDb> {
     var username: String
     var password: String
     var email: String
+    var type: String
     var cep: String?
     var rua: String?
     var numero: Int?
@@ -23,6 +24,7 @@ object Users : Table<UserDb>("users_tb") {
     val username = varchar("username").bindTo { it.username }
     val password = varchar("password").bindTo { it.password }
     val email = varchar("email").bindTo { it.email }
+    var type = varchar("type").bindTo { it.type }
     val cep = varchar("address_cep").bindTo { it.cep }
     val rua = varchar("address_rua").bindTo { it.rua }
     val numero = int("address_numero").bindTo { it.numero }

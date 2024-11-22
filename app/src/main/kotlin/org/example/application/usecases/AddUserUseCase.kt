@@ -4,6 +4,7 @@ import org.example.application.UseCaseResult
 import org.example.domain.DomainExceptions
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
+import org.example.domain.users.UserType
 import kotlin.random.Random
 
 data class UserCreateReqDto(
@@ -23,7 +24,7 @@ class AddUserUseCase(
 ) {
     fun execute(input: UserCreateReqDto): UseCaseResult<Any> {
         val uuid = Random.nextLong(until = 1_000)
-        val user = User(uuid, input.username, input.password, input.email, null)
+        val user = User(uuid, input.username, input.password, input.email, UserType.USER, null)
 
         if (userRepository.existsByEmail(user.email)) {
             return UseCaseResult.BusinessRuleError("E-mail already exists")
