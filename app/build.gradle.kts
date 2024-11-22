@@ -35,6 +35,7 @@ dependencies {
     implementation("org.valiktor:valiktor-core:0.12.0") // valiktor
     implementation("org.ktorm:ktorm-core:3.3.0") // ktorm database
     implementation("org.xerial:sqlite-jdbc:3.41.2.1") // sqlite connector (No suitable driver found)
+    implementation("io.minio:minio:8.5.10") // minio s3 compatible storage
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

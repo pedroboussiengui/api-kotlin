@@ -15,6 +15,8 @@ fun init() {
 
     app.post("/users", UserController::add)
 
+    app.post("/users/avatar", UserController::uploadAvatar)
+
     app.post("/users/as-moderator", UserController::addModerator)
 
     app.get("/users/{id}", UserController::getById)
