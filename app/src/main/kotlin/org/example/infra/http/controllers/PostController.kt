@@ -9,6 +9,7 @@ import org.example.infra.database.ktorm.repositories.SQLitePostRepository
 import org.example.infra.http.HttpStatus
 import org.example.infra.http.controllers.ContextHelpers.contextUser
 import org.example.infra.http.controllers.ContextHelpers.handleError
+import org.example.infra.http.controllers.ContextHelpers.validId
 
 object PostController {
 
@@ -25,14 +26,22 @@ object PostController {
                 ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
             }
         }
-
     }
 
-    fun getPostByUsers(ctx: Context) {
-        val owner = ctx.contextUser() ?: return
+    fun getMyPosts(ctx: Context) {
+        val contextUser = ctx.contextUser() ?: return
 
         val getPostByUserUseCase = GetPostsByUserUseCase(SQLitePostRepository())
-        val res = getPostByUserUseCase.execute(owner)
+        val res = getPostByUserUseCase.execute(contextUser)
+        ctx.json(res)
+    }
+
+    fun getUserPosts(ctx: Context) {
+//        val owner = ctx.contextUser() ?: return
+        val id = ctx.validId() ?: return
+
+        val getPostByUserUseCase = GetPostsByUserUseCase(SQLitePostRepository())
+        val res = getPostByUserUseCase.execute(id)
         ctx.json(res)
     }
 }
