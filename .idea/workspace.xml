@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2c8c7d9-213c-424d-85f8-24512587e4f9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/PostAuthorizationPolicyTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/UseCaseResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/UseCaseResult.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/CreatePostUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/CreatePostUseCase.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/GetUserByIdUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/GetUserByIdUseCase.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/PostController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/PostController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/UserController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/UserController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/posts/UserTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/user/UserTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,10 +43,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Object" />
-        <option value="JUnit5 Test Class" />
         <option value="Kotlin File" />
         <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -67,6 +63,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Build api-kotlin.executor": "Run",
+    "Gradle.PostAuthorizationPolicyTest.executor": "Run",
+    "Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost.executor": "Run",
+    "Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost_success.executor": "Run",
     "Gradle.PostTest.executor": "Run",
     "Gradle.PostTest.test_instantiatePost_fail (1).executor": "Run",
     "Gradle.PostTest.test_instantiatePost_fail.executor": "Debug",
@@ -105,15 +104,17 @@
       <recent name="" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="org.example.domain.user" />
       <recent name="org.example.application" />
       <recent name="org.example.domain" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.example.domain" />
       <recent name="org.example.domain.posts" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.AppKt">
-    <configuration name="PostTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost">
+    <configuration name="PostAuthorizationPolicyTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -126,7 +127,7 @@
           <list>
             <option value=":app:test" />
             <option value="--tests" />
-            <option value="&quot;org.example.domain.posts.PostTest&quot;" />
+            <option value="&quot;org.example.domain.PostAuthorizationPolicyTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -137,7 +138,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostTest.test_instantiatePost_fail (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -150,7 +151,7 @@
           <list>
             <option value=":app:test" />
             <option value="--tests" />
-            <option value="&quot;org.example.domain.posts.PostTest.test_instantiatePost_fail&quot;" />
+            <option value="&quot;org.example.domain.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -161,7 +162,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostTest.test_likePost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost_success" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -174,7 +175,7 @@
           <list>
             <option value=":app:test" />
             <option value="--tests" />
-            <option value="&quot;org.example.domain.posts.PostTest.test_likePost&quot;" />
+            <option value="&quot;org.example.domain.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost_success&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -218,11 +219,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost" />
+        <item itemvalue="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost_success" />
+        <item itemvalue="Gradle.PostAuthorizationPolicyTest" />
         <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Gradle.UserTest.test_instantiateUser_success" />
-        <item itemvalue="Gradle.PostTest" />
-        <item itemvalue="Gradle.PostTest.test_likePost" />
-        <item itemvalue="Gradle.PostTest.test_instantiatePost_fail (1)" />
       </list>
     </recent_temporary>
   </component>
