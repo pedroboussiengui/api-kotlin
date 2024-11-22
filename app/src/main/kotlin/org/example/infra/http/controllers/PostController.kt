@@ -6,6 +6,7 @@ import org.example.application.usecases.CreatePostUseCase
 import org.example.application.usecases.GetPostsByUserUseCase
 import org.example.application.usecases.PostCreateReqDto
 import org.example.infra.database.ktorm.repositories.SQLitePostRepository
+import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.http.HttpStatus
 import org.example.infra.http.controllers.ContextHelpers.contextUser
 import org.example.infra.http.controllers.ContextHelpers.handleError
@@ -17,10 +18,13 @@ object PostController {
         val req = ctx.bodyAsClass(PostCreateReqDto::class.java)
         val owner = ctx.contextUser() ?: return
 
-        val createPostUseCase = CreatePostUseCase(SQLitePostRepository())
+        val createPostUseCase = CreatePostUseCase(SQLitePostRepository(), SQLiteUserRepository())
         when( val res = createPostUseCase.execute(req, owner)) {
             is UseCaseResult.Success -> {
                 ctx.status(201).json(res.data)
+            }
+            is UseCaseResult.NotAllowedError -> {
+                ctx.handleError(HttpStatus.FORBIDDEN, res.message)
             }
             else -> {
                 ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")

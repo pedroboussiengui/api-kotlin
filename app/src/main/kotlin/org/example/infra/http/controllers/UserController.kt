@@ -69,6 +69,7 @@ object UserController {
             is UseCaseResult.ValidationError -> {
                 ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
             }
+            else -> ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
         }
     }
 
@@ -100,6 +101,25 @@ object UserController {
             }
             is UseCaseResult.NotFoundError -> {
                 ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
+            }
+            is UseCaseResult.ValidationError -> {
+                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
+            }
+            else -> {
+                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            }
+        }
+    }
+
+    fun addModerator(ctx: Context) {
+        val req = ctx.bodyAsClass(ModUserCreateReqDto::class.java)
+        val addModeratorUserUseCase = AddModeratorUserUseCase(SQLiteUserRepository())
+        when (val res = addModeratorUserUseCase.execute(req)) {
+            is UseCaseResult.Success -> {
+                ctx.status(201).json(res.data)
+            }
+            is UseCaseResult.BusinessRuleError -> {
+                ctx.handleError(HttpStatus.CONFLICT, message = res.message)
             }
             is UseCaseResult.ValidationError -> {
                 ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)

@@ -15,6 +15,8 @@ fun init() {
 
     app.post("/users", UserController::add)
 
+    app.post("/users/as-moderator", UserController::addModerator)
+
     app.get("/users/{id}", UserController::getById)
 
     app.patch("/users/{id}", UserController::update)
