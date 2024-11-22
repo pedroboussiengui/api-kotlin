@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2c8c7d9-213c-424d-85f8-24512587e4f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/PostAuthorizationPolicyTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/posts/UserTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/kotlin/org/example/domain/user/UserTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/posts/repository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/posts/repository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/repository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/repository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +45,10 @@
       <list>
         <option value="Kotlin Object" />
         <option value="Kotlin File" />
+        <option value="JUnit5 Test Class" />
+        <option value="Kotlin Interface" />
         <option value="Class" />
         <option value="Kotlin Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -113,7 +115,7 @@
       <recent name="org.example.domain.posts" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost">
+  <component name="RunManager" selected="Kotlin.AppKt">
     <configuration name="PostAuthorizationPolicyTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -219,10 +221,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost" />
         <item itemvalue="Gradle.PostAuthorizationPolicyTest.test_isAuthorized_UserViewPost_success" />
         <item itemvalue="Gradle.PostAuthorizationPolicyTest" />
-        <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Gradle.UserTest.test_instantiateUser_success" />
       </list>
     </recent_temporary>
