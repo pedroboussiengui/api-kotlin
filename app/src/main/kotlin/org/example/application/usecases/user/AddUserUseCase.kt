@@ -1,5 +1,6 @@
 package org.example.application.usecases.user
 
+import org.example.adapter.PasswordHasher
 import org.example.application.UseCaseResult
 import org.example.domain.DomainExceptions
 import org.example.domain.users.User
@@ -20,7 +21,8 @@ data class UserCreateResDto(
 )
 
 class AddUserUseCase(
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
+        private val passwordHasher: PasswordHasher
 ) {
     fun execute(input: UserCreateReqDto): UseCaseResult<Any> {
         val uuid = Random.nextLong(until = 1_000)
@@ -33,6 +35,11 @@ class AddUserUseCase(
         user.isValid().onFailure {err ->
             if (err is DomainExceptions.ValidationError) return UseCaseResult.ValidationError(err.errors)
         }
+
+        // agora que eu tenho certeza que a senha do user tem pelo menos 8 digitos, eu posso gerar um hash
+        val hashedPassword = passwordHasher.hash(user.password)
+
+        user.password = hashedPassword
 
         userRepository.addUser(user)
         val output = UserCreateResDto(user.id, user.username, user.email)

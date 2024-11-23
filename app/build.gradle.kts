@@ -39,6 +39,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0") // yaml
+
+    implementation("org.mindrot:jbcrypt:0.4") // bcrypt
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

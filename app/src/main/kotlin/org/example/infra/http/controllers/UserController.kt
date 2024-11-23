@@ -4,6 +4,7 @@ import io.javalin.http.Context
 import org.example.infra.http.HttpStatus
 import org.example.application.UseCaseResult
 import org.example.application.usecases.user.*
+import org.example.infra.bcrypt.BCryptPasswordHasher
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.filestorage.MinioFileHandler
 import org.example.infra.filestorage.MinioSingletonConnection
@@ -16,7 +17,7 @@ object UserController {
 
     fun add(ctx: Context) {
         val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
-        val addUserUseCase = AddUserUseCase(SQLiteUserRepository())
+        val addUserUseCase = AddUserUseCase(SQLiteUserRepository(), BCryptPasswordHasher())
         when (val res = addUserUseCase.execute(req)) {
             is UseCaseResult.Success -> {
                 ctx.status(201).json(res.data)
