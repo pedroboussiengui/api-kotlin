@@ -36,7 +36,7 @@ class AddUserAvatarUseCase(
         // contextUser is authorized to update user?
 
         val filePath = "user_${user.id}/avatar.${input.extension}"
-        val savedPath = fileHandler.write(filePath, input.content)
+        val savedPath = fileHandler.upload(filePath, input.content)
                 ?: return UseCaseResult.InternalError("Erro duting image saving")
 
         // update use with new url image avatar
