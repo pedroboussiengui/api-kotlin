@@ -1,6 +1,7 @@
 package org.example.infra.http
 
 import io.javalin.Javalin
+import org.example.infra.http.controllers.MonitoringController
 import org.example.infra.http.controllers.PostController
 import org.example.infra.http.controllers.UserController
 
@@ -11,6 +12,9 @@ fun init() {
         config.jsonMapper(mapperConfig.gsonMapper)
     }
 
+    // monitoramento
+    app.get("/health", MonitoringController::healthcheck)
+
     app.get("/users", UserController::getAll)
 
     app.post("/users", UserController::add)
@@ -18,7 +22,7 @@ fun init() {
     app.post("/users/avatar", UserController::uploadAvatar)
 
     app.post("/users/as-moderator", UserController::addModerator)
-
+;
     app.get("/users/{id}", UserController::getById)
 
     app.patch("/users/{id}", UserController::update)
