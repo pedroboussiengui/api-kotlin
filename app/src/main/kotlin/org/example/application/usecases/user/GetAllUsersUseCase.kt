@@ -1,4 +1,4 @@
-package org.example.application.usecases
+package org.example.application.usecases.user
 
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository

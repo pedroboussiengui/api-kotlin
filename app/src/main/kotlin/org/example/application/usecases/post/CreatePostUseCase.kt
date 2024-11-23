@@ -1,4 +1,4 @@
-package org.example.application.usecases
+package org.example.application.usecases.post
 
 import org.example.application.UseCaseResult
 import org.example.domain.Action

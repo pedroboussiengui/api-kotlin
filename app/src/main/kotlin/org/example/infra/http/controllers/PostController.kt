@@ -2,9 +2,9 @@ package org.example.infra.http.controllers
 
 import io.javalin.http.Context
 import org.example.application.UseCaseResult
-import org.example.application.usecases.CreatePostUseCase
-import org.example.application.usecases.GetPostsByUserUseCase
-import org.example.application.usecases.PostCreateReqDto
+import org.example.application.usecases.post.CreatePostUseCase
+import org.example.application.usecases.post.GetPostsByUserUseCase
+import org.example.application.usecases.post.PostCreateReqDto
 import org.example.infra.database.ktorm.repositories.SQLitePostRepository
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.http.HttpStatus

@@ -1,4 +1,4 @@
-package org.example.application.usecases
+package org.example.application.usecases.user
 
 import org.example.application.UseCaseResult
 import org.example.domain.DomainExceptions

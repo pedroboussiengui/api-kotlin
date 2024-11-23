@@ -1,10 +1,9 @@
 package org.example.infra.http.controllers
 
 import io.javalin.http.Context
-import io.minio.MinioClient
 import org.example.infra.http.HttpStatus
 import org.example.application.UseCaseResult
-import org.example.application.usecases.*
+import org.example.application.usecases.user.*
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.filestorage.MinioFileHandler
 import org.example.infra.filestorage.MinioSingletonConnection

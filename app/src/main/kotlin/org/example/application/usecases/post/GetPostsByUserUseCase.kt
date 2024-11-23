@@ -1,4 +1,4 @@
-package org.example.application.usecases
+package org.example.application.usecases.post
 
 import org.example.domain.posts.Post
 import org.example.domain.posts.PostRepository
