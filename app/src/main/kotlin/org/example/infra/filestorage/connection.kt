@@ -12,6 +12,7 @@ object MinioSingletonConnection {
     private val endpoint = "http://localhost:9000"
     private val accessKey = "minioadmin"
     private val secretKey = "minioadmin"
+    private val healthUrl = "http://localhost:9000/minio/health/live"
 
     val minioClient: MinioClient by lazy {
         MinioClient.builder()
@@ -22,7 +23,7 @@ object MinioSingletonConnection {
 
     fun healthcheck(): Pair<Boolean, String?> {
         return try {
-            val url = URL("http://localhost:9000/minio/health/live")
+            val url = URL(healthUrl)
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 5000 // 5 segundos

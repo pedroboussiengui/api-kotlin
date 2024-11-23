@@ -36,6 +36,9 @@ dependencies {
     implementation("org.ktorm:ktorm-core:3.3.0") // ktorm database
     implementation("org.xerial:sqlite-jdbc:3.41.2.2") // sqlite connector (No suitable driver found)
     implementation("io.minio:minio:8.5.10") // minio s3 compatible storage
+
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0") // yaml
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

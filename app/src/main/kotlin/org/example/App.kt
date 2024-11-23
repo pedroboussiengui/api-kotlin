@@ -1,7 +1,8 @@
 package org.example
 
-import org.example.infra.http.init
+import org.example.infra.http.Server
 
 fun main() {
-    init()
+    val server = Server()
+    server.start()
 }
