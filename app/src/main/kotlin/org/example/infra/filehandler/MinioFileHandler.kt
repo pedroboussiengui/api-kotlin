@@ -4,15 +4,14 @@ import io.minio.GetPresignedObjectUrlArgs
 import io.minio.MinioClient
 import io.minio.errors.MinioException
 import io.minio.http.Method
-import org.example.application.adapter.FileHandler
+import org.example.adapter.FileHandler
 import java.io.InputStream
-
 
 class MinioFileHandler(
         private val minioClient: MinioClient,
         private val bucketName: String
 ): FileHandler {
-    override fun read(path: String): String? {
+    override fun download(path: String): String? {
         return try {
             val url = minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
@@ -29,7 +28,7 @@ class MinioFileHandler(
         }
     }
 
-    override fun write(path: String, content: InputStream): String? {
+    override fun upload(path: String, content: InputStream): String? {
         return try {
             minioClient.putObject(
                     io.minio.PutObjectArgs.builder()
@@ -39,7 +38,7 @@ class MinioFileHandler(
                             .contentType("application/octet-stream")
                             .build()
             )
-            read(path)
+            download(path)
         } catch (e: Exception) {
             println("Erro ao salvar o arquivo: ${e.message}")
             null

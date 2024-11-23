@@ -9,6 +9,7 @@ interface UserDb : Entity<UserDb> {
     var id: Long
     var username: String
     var password: String
+    var avatarUrl: String?
     var email: String
     var type: String
     var cep: String?
@@ -23,6 +24,7 @@ object Users : Table<UserDb>("users_tb") {
     val id = long("id").primaryKey().bindTo { it.id }
     val username = varchar("username").bindTo { it.username }
     val password = varchar("password").bindTo { it.password }
+    val avatarUrl = varchar("avatar_url").bindTo { it.avatarUrl }
     val email = varchar("email").bindTo { it.email }
     var type = varchar("type").bindTo { it.type }
     val cep = varchar("address_cep").bindTo { it.cep }

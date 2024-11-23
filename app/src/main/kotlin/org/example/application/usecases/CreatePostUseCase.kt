@@ -2,7 +2,6 @@ package org.example.application.usecases
 
 import org.example.application.UseCaseResult
 import org.example.domain.Action
-import org.example.domain.AuthorizationPolicy
 import org.example.domain.DomainExceptions
 import org.example.domain.PostAuthorizationPolicy
 import org.example.domain.posts.Post

@@ -83,11 +83,23 @@ class SQLiteUserRepository : UserRepository {
                 } ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
     }
 
+    override fun setAvatar(id: Long, avatarUrl: String): Result<User> {
+        return database.sequenceOf(Users).find { it.id eq id }
+                ?.apply {
+                    this.avatarUrl = avatarUrl
+                    this.flushChanges()
+                }?.let {
+                    val user = fromPersistence(it)
+                    Result.success(user)
+                } ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
+    }
+
     private fun fromPersistence(userDb: UserDb) : User {
         return User(
                 id = userDb.id,
                 username = userDb.username,
                 password = userDb.password,
+                avatarUrl = userDb.avatarUrl,
                 email = userDb.email,
                 type = UserType.valueOf(userDb.type),
                 address = if (!isAddressNull(userDb)) {
@@ -117,6 +129,7 @@ class SQLiteUserRepository : UserRepository {
             id = user.id
             username = user.username
             password = user.password
+            avatarUrl = user.avatarUrl
             email = user.email
             type = user.type.toString()
             cep = user.address?.cep

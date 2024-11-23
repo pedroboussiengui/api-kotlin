@@ -9,4 +9,5 @@ interface UserRepository {
     fun update(id: Long, newUser: User): Result<Long>
     fun remove(id: Long): Result<Boolean>
     fun setAddress(id: Long, address: Address): Result<User>
+    fun setAvatar(id: Long, avatarUrl: String): Result<User>
 }

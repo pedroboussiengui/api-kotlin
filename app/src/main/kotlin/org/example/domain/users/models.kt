@@ -13,6 +13,7 @@ class User(
     val id: Long,
     var username: String,
     var password: String,
+    var avatarUrl: String?,
     var email: String,
     var type: UserType,
     var address: Address?

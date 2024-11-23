@@ -4,7 +4,7 @@ import io.javalin.http.Context
 import io.minio.MinioClient
 import org.example.infra.http.HttpStatus
 import org.example.application.UseCaseResult
-import org.example.application.adapter.FileHandler
+import org.example.adapter.FileHandler
 import org.example.application.usecases.*
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.filehandler.MinioFileHandler

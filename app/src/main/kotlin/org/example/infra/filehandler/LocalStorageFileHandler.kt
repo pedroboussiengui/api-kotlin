@@ -1,6 +1,6 @@
 package org.example.infra.filehandler
 
-import org.example.application.adapter.FileHandler
+import org.example.adapter.FileHandler
 import java.nio.file.Files
 import java.nio.file.Paths
 

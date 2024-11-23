@@ -7,12 +7,54 @@
     <list default="true" id="f2c8c7d9-213c-424d-85f8-24512587e4f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/UseCaseResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/UseCaseResult.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/adapter/FileHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/adapter/FileHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/adapter/FileHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/adapter/FileHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddModeratorUserUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddModeratorUserUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserAvatarUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserAvatarUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/CreatePostUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/CreatePostUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/repository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/domain/users/repository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/orm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/orm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/repositories/user.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/database/ktorm/repositories/user.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/filehandler/LocalStorageFileHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/filehandler/LocalStorageFileHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/Init.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/filehandler/MinioFileHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/filehandler/MinioFileHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/UserController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/infra/http/controllers/UserController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/kotlin/org/example/adapter/FileHandlerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/kotlin/org/example/adapter/FileHandlerTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/.bloomcycle.bin/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/.bloomcycle.bin/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/.heal/mrf/list.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage-cache.bin.bkp/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage-cache.bin.bkp/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage-cache.bin/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage-cache.bin/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage.json/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/.usage.json/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/teste/.usage-cache.bin.bkp/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/teste/.usage-cache.bin.bkp/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/buckets/teste/.usage-cache.bin/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/.minio.sys/buckets/teste/.usage-cache.bin/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/config/iam/sts/LDQ12AVF0RCTYAMYKC1W/identity.json/xl.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/001c7c28-7535-442b-b447-5198d1e49ec8/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/08262bfc-7be5-45ff-8b56-9300f4bdef52/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/10789a32-2ff6-49d6-ab48-7580b6190de6/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/1c17191e-4725-442c-9f0a-028c9cecc8dd/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/2b3a4db8-a824-4ac4-9e87-a2d59f85df9c/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/2e7c7186-20bf-42e0-bfc4-a32d76f42974/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/329523c6-96a3-4316-a9f8-42a6c3d276dc/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/540cc741-2fe5-486a-95eb-9fa6b2ecaf86/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/6c1733b8-e56b-409b-aceb-83ea11412639/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/6fbd71b8-8c65-4927-9174-111bb0230336/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/80f11fbe-8bd1-4747-a404-e4b730758c47/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/964dac18-9a5a-4f07-889a-b8e8033261fc/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/9cb4d7ff-c043-474f-87b2-2aa156266127/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/b1cb88e6-b6cf-4511-90a8-919cd676d18c/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/b6085b0d-2c65-43ed-a9a4-81cc25a46a25/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/bf48b9b9-6d6b-4d91-af35-4b33739ebcf1/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/c53b79af-d91f-4b24-a08c-3cc31afffea9/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/d3316f37-ebb0-4082-a6eb-f0940e2abfb3/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/df91d7b1-0b4c-4b9c-98d6-9ce5eaf76d01/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/e54cc0e2-3f5a-4bef-955b-67b8e174f743/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/e94077f8-071e-4c3c-80d2-cd2ff8702cf2/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/ed8ee66a-63f3-4a92-a8f6-aa30a8b33852/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/fb8b805e-1c51-47ca-a141-0e7a2b55000c/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/.trash/ff870ff3-5193-4bed-b3fa-90ad6ff8d490/xl.meta.bkp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/.minio.sys/tmp/9826e01b-2b71-47c3-a66c-8ef37d50aa6f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/teste/user_23/avatar..jpg/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/data/teste/user_23/avatar..jpg/xl.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migrations.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +120,7 @@
     "Gradle.PostTest.test_instantiatePost_success.executor": "Run",
     "Gradle.PostTest.test_likePost.executor": "Run",
     "Gradle.UserTest.test_instantiateUser_success.executor": "Run",
-    "Kotlin.AppKt.executor": "Run",
+    "Kotlin.AppKt.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
@@ -254,5 +296,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/kotlin/org/example/application/usecases/AddUserAvatarUseCase.kt</url>
+          <line>19</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

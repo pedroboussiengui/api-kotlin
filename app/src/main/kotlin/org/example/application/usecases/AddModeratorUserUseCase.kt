@@ -24,7 +24,7 @@ class AddModeratorUserUseCase(
 ) {
     fun execute(input: ModUserCreateReqDto): UseCaseResult<Any> {
         val uuid = Random.nextLong(from = 1_001, until = 10_000)
-        val user = User(uuid, input.username, input.password, input.email, UserType.MODERATOR, null)
+        val user = User(uuid, input.username, input.password, null, input.email, UserType.MODERATOR, null)
 
         if (userRepository.existsByEmail(user.email)) {
             return UseCaseResult.BusinessRuleError("E-mail already exists")

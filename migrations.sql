@@ -32,3 +32,5 @@
 --ALTER TABLE users_tb RENAME COLUMN estado TO address_estado;
 
 --ALTER TABLE users_tb ADD COLUMN type TEXT DEFAULT 'USER';
+
+--ALTER TABLE users_tb ADD COLUMN avatar_url TEXT DEFAULT NULL;
