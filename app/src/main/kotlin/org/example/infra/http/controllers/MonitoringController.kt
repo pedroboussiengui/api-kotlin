@@ -17,13 +17,16 @@ data class HealthResponse(
 object MonitoringController {
     fun healthcheck(ctx: Context) {
         val res = HealthResponse()
+        integrateMinIOFramework(res)
+        ctx.json(res)
+    }
+
+    private fun integrateMinIOFramework(res: HealthResponse) {
         val health = MinioSingletonConnection.healthcheck()
         val minioFramework = MinioFramework(
-                name = "MinIO object Storage",
                 status = if (health.first) "UP" else "DOWN",
                 message = health.second
         )
         res.frameworks += minioFramework
-        ctx.json(res)
     }
 }
