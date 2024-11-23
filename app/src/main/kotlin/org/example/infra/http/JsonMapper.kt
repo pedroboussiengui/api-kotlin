@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder
 import io.javalin.json.JsonMapper
 import java.lang.reflect.Type
 
-class MapperConfig {
+class JsonMapper {
     private val gson = GsonBuilder().create()
 
     val gsonMapper = object : JsonMapper {

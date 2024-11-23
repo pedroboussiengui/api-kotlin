@@ -1,6 +1,7 @@
 package org.example.infra.filestorage
 
 import io.minio.MinioClient
+import org.example.infra.environments.Environment
 import org.example.infra.http.controllers.Framework
 import java.net.HttpURLConnection
 import java.net.URL
@@ -9,10 +10,11 @@ import java.net.URL
  * https://min.io/docs/minio/linux/operations/monitoring/healthcheck-probe.html
  */
 object MinioSingletonConnection {
-    private val endpoint = "http://localhost:9000"
-    private val accessKey = "minioadmin"
-    private val secretKey = "minioadmin"
-    private val healthUrl = "http://localhost:9000/minio/health/live"
+    private val env: Environment = Environment()
+    private val endpoint = env.get("minio.endpoint") as String
+    private val accessKey = env.get("minio.accessKey") as String
+    private val secretKey = env.get("minio.secretKey") as String
+    private val healthUrl = env.get("minio.healthUrl") as String
 
     val minioClient: MinioClient by lazy {
         MinioClient.builder()

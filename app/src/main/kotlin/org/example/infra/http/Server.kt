@@ -7,19 +7,22 @@ import org.example.infra.http.controllers.PostController
 import org.example.infra.http.controllers.UserController
 
 class Server {
-    private val mapperConfig: MapperConfig = MapperConfig()
+    private val mapper: JsonMapper = JsonMapper()
     private val env: Environment = Environment()
     private lateinit var app: Javalin // propriedade app será inicializada mais tarde
 
     init {
         setup()
+        routing()
     }
 
     private fun setup() {
         app = Javalin.create { config ->
-            config.jsonMapper(mapperConfig.gsonMapper)
+            config.jsonMapper(mapper.gsonMapper)
         }
+    }
 
+    private fun routing() {
         // monitoramento
         app.get("/health", MonitoringController::healthcheck)
 
@@ -30,7 +33,7 @@ class Server {
         app.post("/users/avatar", UserController::uploadAvatar)
 
         app.post("/users/as-moderator", UserController::addModerator)
-        ;
+
         app.get("/users/{id}", UserController::getById)
 
         app.patch("/users/{id}", UserController::update)
@@ -47,6 +50,6 @@ class Server {
     }
 
     fun start() {
-        app.start(env.get("server.port") as? Int ?: 7070)
+        app.start(env.get("server.port") as Int)
     }
 }

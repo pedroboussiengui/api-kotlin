@@ -15,17 +15,19 @@ class Environment {
             ?: throw IllegalArgumentException("Arquivo 'env.yml' não encontrado no classpath")
 
     init {
-        val yamlMapper: ObjectMapper = ObjectMapper(YAMLFactory())
+        val yamlMapper = ObjectMapper(YAMLFactory())
         configData = yamlMapper.readValue(inputStream, Map::class.java) as Map<String, Any>
     }
 
-    fun get(key: String): Any? {
+    fun get(key: String): Any {
         val keys = key.split(".")
         var currentValue: Any? = configData
         for (k in keys) {
             currentValue = (currentValue as? Map<*, *>)?.get(k)
-            if (currentValue == null) return null
+            if (currentValue == null) {
+                throw NoSuchElementException("Key '$key' not found in env file.")
+            }
         }
-        return currentValue
+        return currentValue ?: throw NoSuchElementException("Key '$key' not found in env file.")
     }
 }
