@@ -1,4 +1,4 @@
-package org.example.infra.filehandler
+package org.example.infra.filestorage
 
 import io.minio.GetPresignedObjectUrlArgs
 import io.minio.MinioClient

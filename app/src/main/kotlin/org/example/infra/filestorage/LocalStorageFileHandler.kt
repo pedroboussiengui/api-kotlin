@@ -1,8 +1,4 @@
-package org.example.infra.filehandler
-
-import org.example.adapter.FileHandler
-import java.nio.file.Files
-import java.nio.file.Paths
+package org.example.infra.filestorage
 
 /**
  * Essa é a implementação concreta, que nesse caso salva no próprio sistema de arquivos da máquina,
