@@ -7,17 +7,13 @@ import org.example.application.UseCaseResult
 import org.example.application.usecases.*
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.filestorage.MinioFileHandler
+import org.example.infra.filestorage.MinioSingletonConnection
 import org.example.infra.http.controllers.ContextHelpers.contextUser
 import org.example.infra.http.controllers.ContextHelpers.handleError
 import org.example.infra.http.controllers.ContextHelpers.validId
 
 object UserController {
-    private val minioClient: MinioClient by lazy {
-        MinioClient.builder()
-                .endpoint("http://localhost:9000")
-                .credentials("minioadmin", "minioadmin")
-                .build()
-    }
+    private val minioClient = MinioSingletonConnection.minioClient
 
     fun add(ctx: Context) {
         val req = ctx.bodyAsClass(UserCreateReqDto::class.java)

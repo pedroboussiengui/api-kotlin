@@ -7,6 +7,11 @@ import io.minio.http.Method
 import org.example.adapter.FileHandler
 import java.io.InputStream
 
+/**
+ * Essa é a implementação concreta, que nesse caso salva no local storage minio,
+ * mas poderia ser no S3 bucket da AWS, Azure Blob Storage (Microsoft), núvem privada com NextCloud,
+ * Dropbox, Firebase, enfim, uma infinidade de opções, mas que nunca devem interferir no meu domínio
+ */
 class MinioFileHandler(
         private val minioClient: MinioClient,
         private val bucketName: String
