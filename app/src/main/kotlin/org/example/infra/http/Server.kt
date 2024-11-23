@@ -2,6 +2,7 @@ package org.example.infra.http
 
 import io.javalin.Javalin
 import org.example.infra.environments.Environment
+import org.example.infra.http.controllers.AuthenticationController
 import org.example.infra.http.controllers.MonitoringController
 import org.example.infra.http.controllers.PostController
 import org.example.infra.http.controllers.UserController
@@ -25,6 +26,8 @@ class Server {
     private fun routing() {
         // monitoramento
         app.get("/health", MonitoringController::healthcheck)
+
+        app.post("/password-auth", AuthenticationController::authenticateByPassword)
 
         app.get("/users", UserController::getAll)
 
