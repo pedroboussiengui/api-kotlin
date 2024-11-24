@@ -41,6 +41,8 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0") // yaml
 
     implementation("org.mindrot:jbcrypt:0.4") // bcrypt
+    implementation("redis.clients:jedis:5.2.0") // jetis redis client
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
