@@ -17,6 +17,7 @@ class Server {
         routing()
     }
 
+    // config.cookies.secureOnly = true // Torna todos os cookies `Secure`
     private fun setup() {
         app = Javalin.create { config ->
             config.jsonMapper(mapper.gsonMapper)
@@ -28,6 +29,8 @@ class Server {
         app.get("/health", MonitoringController::healthcheck)
 
         app.post("/password-auth", AuthenticationController::authenticateByPassword)
+
+        app.get("/me", UserController::getMe)
 
         app.get("/users", UserController::getAll)
 

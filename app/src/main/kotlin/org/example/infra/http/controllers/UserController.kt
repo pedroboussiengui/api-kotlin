@@ -3,6 +3,7 @@ package org.example.infra.http.controllers
 import io.javalin.http.Context
 import org.example.infra.http.HttpStatus
 import org.example.application.UseCaseResult
+import org.example.application.usecases.auth.PasswordAuthenticationUseCase
 import org.example.application.usecases.user.*
 import org.example.infra.bcrypt.BCryptPasswordHasher
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
@@ -11,6 +12,7 @@ import org.example.infra.filestorage.MinioSingletonConnection
 import org.example.infra.http.controllers.ContextHelpers.contextUser
 import org.example.infra.http.controllers.ContextHelpers.handleError
 import org.example.infra.http.controllers.ContextHelpers.validId
+import org.example.infra.redis.RedisInMemoryUserDAO
 
 object UserController {
     private val minioClient = MinioSingletonConnection.minioClient
@@ -164,5 +166,23 @@ object UserController {
             else -> ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
         }
 
+    }
+
+    fun getMe(ctx: Context) {
+        val sessionCookie = ctx.cookie("session_id")
+        if (sessionCookie == null) {
+            ctx.handleError(HttpStatus.UNAUTHORIZED, "Authentication failed")
+            return
+        }
+
+        val getMeUseCase = GetMeUseCase(SQLiteUserRepository(), RedisInMemoryUserDAO())
+        when (val res = getMeUseCase.execute(sessionCookie)) {
+            is UseCaseResult.Success -> {
+                ctx.json(res.data)
+            }
+            else -> {
+                ctx.handleError(HttpStatus.UNAUTHORIZED, "Invalid session")
+            }
+        }
     }
 }
