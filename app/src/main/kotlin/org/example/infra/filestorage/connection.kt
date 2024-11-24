@@ -11,10 +11,10 @@ import java.net.URL
  */
 object MinioSingletonConnection {
     private val env: Environment = Environment()
-    private val endpoint = env.get("minio.endpoint") as String
-    private val accessKey = env.get("minio.accessKey") as String
-    private val secretKey = env.get("minio.secretKey") as String
-    private val healthUrl = env.get("minio.healthUrl") as String
+    private val endpoint = env.get("minio.endpoint")
+    private val accessKey = env.get("minio.accessKey")
+    private val secretKey = env.get("minio.secretKey")
+    private val healthUrl = env.get("minio.healthUrl")
 
     val minioClient: MinioClient by lazy {
         MinioClient.builder()

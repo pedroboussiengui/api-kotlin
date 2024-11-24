@@ -12,14 +12,14 @@ class Environment {
     private val configData: Map<String, Any>
     private val inputStream: InputStream = this::class.java.classLoader.getResourceAsStream("env.yml")
             ?: this::class.java.classLoader.getResourceAsStream("env.yml")
-            ?: throw IllegalArgumentException("Arquivo 'env.yml' não encontrado no classpath")
+            ?: throw IllegalArgumentException("Env.yaml file not found")
 
     init {
         val yamlMapper = ObjectMapper(YAMLFactory())
         configData = yamlMapper.readValue(inputStream, Map::class.java) as Map<String, Any>
     }
 
-    fun get(key: String): Any {
+    fun get(key: String): String {
         val keys = key.split(".")
         var currentValue: Any? = configData
         for (k in keys) {
@@ -28,6 +28,34 @@ class Environment {
                 throw NoSuchElementException("Key '$key' not found in env file.")
             }
         }
-        return currentValue ?: throw NoSuchElementException("Key '$key' not found in env file.")
+        return resolveEnvVariables(currentValue.toString())
+    }
+}
+
+private fun resolveEnvVariables(value: String): String {
+    val regex = "^\\{(.*)}$".toRegex()
+    val parts = value.split("?:")
+
+    return if (parts.size == 2) {
+        val envVariable = parts[0]
+        val defaultValue = parts[1]
+        if (regex.matches(envVariable)) {
+            val env = envVariable.replace("^\\{(.*)}$".toRegex(), "$1")
+            val envValue = System.getenv(env) ?: defaultValue
+            envValue
+        } else {
+            value
+        }
+    } else if (parts.size == 1) {
+        val envVariable = parts[0]
+        if (regex.matches(envVariable)) {
+            val env = envVariable.replace("^\\{(.*)}$".toRegex(), "$1")
+            val envValue = System.getenv(env) ?: throw NoSuchElementException("Environment variable '$env' not found.")
+            envValue
+        } else {
+            value
+        }
+    } else {
+        throw IllegalArgumentException("Invalid format for value: $value")
     }
 }

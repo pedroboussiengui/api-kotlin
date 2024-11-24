@@ -58,6 +58,7 @@ class Server {
     }
 
     fun start() {
-        app.start(env.get("server.port") as Int)
+        val port = env.get("server.port").toInt()
+        app.start(port)
     }
 }

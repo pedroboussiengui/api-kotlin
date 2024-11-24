@@ -6,8 +6,8 @@ import redis.clients.jedis.Jedis
 
 object JedisSingletonConn {
     private val env: Environment = Environment()
-    private val host = env.get("jedis.host") as String
-    private val port = env.get("jedis.port") as Int
+    private val host = env.get("jedis.host")
+    private val port = env.get("jedis.port").toInt()
 
     // TODO: implement connection pool
     // TODO: auth
