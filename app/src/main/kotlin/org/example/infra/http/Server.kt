@@ -32,6 +32,8 @@ class Server {
 
         app.get("/me", UserController::getMe)
 
+        app.get("/active-sessions", MonitoringController::getActiveSessions)
+
         app.get("/users", UserController::getAll)
 
         app.post("/users", UserController::add)

@@ -5,6 +5,7 @@ import org.example.infra.filestorage.MinioFramework
 import org.example.infra.filestorage.MinioSingletonConnection
 import org.example.infra.redis.JedisSingletonConn
 import org.example.infra.redis.RedisFramework
+import org.example.infra.redis.RedisInMemoryUserDAO
 
 abstract class Framework(
     open val name: String,
@@ -16,7 +17,30 @@ data class HealthResponse(
     var frameworks: List<Framework> = mutableListOf()
 )
 
+data class ActiveSessionResponse(
+    var sessionId: String,
+    var remainingTimeInSeconds: Long
+)
+
 object MonitoringController {
+
+    fun getActiveSessions(ctx: Context) {
+        val redis = RedisInMemoryUserDAO()
+        val sessions = redis.getAll()
+        if (sessions.isEmpty()) {
+            ctx.status(204).result("No active sessions found")
+            return
+        }
+
+        val res = mutableListOf<ActiveSessionResponse>()
+        for (session in sessions) {
+            val remainingTime = redis.remainingTime(session)
+            val maskedSessionId = session.take(6) + "**********"
+            res.add(ActiveSessionResponse(maskedSessionId, remainingTime))
+        }
+        ctx.json(res)
+    }
+
     fun healthcheck(ctx: Context) {
         val res = HealthResponse()
         integrateMinIOFramework(res)

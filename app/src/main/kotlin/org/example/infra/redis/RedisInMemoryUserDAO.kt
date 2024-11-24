@@ -14,7 +14,7 @@ class RedisInMemoryUserDAO: InMemoryDAO<Long> {
     private val expireIn: Long = 1.hours.toLong(DurationUnit.SECONDS)
 
     override fun save(key: String, value: Long) {
-        jedis.setex(key, expireIn,value.toString())
+        jedis.setex(key, expireIn, value.toString())
     }
 
     override fun get(key: String): Long {
@@ -23,5 +23,13 @@ class RedisInMemoryUserDAO: InMemoryDAO<Long> {
 
     override fun delete(key: String) {
         jedis.del(key)
+    }
+
+    override fun getAll(): Set<String> {
+        return jedis.keys("*")
+    }
+
+    override fun remainingTime(key: String): Long {
+        return jedis.ttl(key)
     }
 }
