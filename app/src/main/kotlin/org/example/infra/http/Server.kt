@@ -30,6 +30,10 @@ class Server {
 
         app.post("/password-auth", AuthenticationController::authenticateByPassword)
 
+        app.get("/github-authentication", AuthenticationController::authenticateByGithub)
+
+        app.get("/callback/github", AuthenticationController::githubCallback)
+
         app.get("/me", UserController::getMe)
 
         app.get("/active-sessions", MonitoringController::getActiveSessions)

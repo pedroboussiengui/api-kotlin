@@ -43,6 +43,8 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4") // bcrypt
     implementation("redis.clients:jedis:5.2.0") // jetis redis client
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0") // http request library
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
