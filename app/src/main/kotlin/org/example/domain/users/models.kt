@@ -61,5 +61,28 @@ class Address(
 )
 
 enum class UserType {
-    USER, MODERATOR
+    USER,           // common application user (post, following, followers, likes)
+    MODERATOR,      // use can moderate user content (delete inappropriate posts, ban users)
+    ADMIN           // use that have admin roles (register moderator and sysadmin)
 }
+
+enum class CredentialType {
+    PASSWORD,       // user that authenticate by username and password
+    GITHUB          // user that authenticate by GitHub oauth
+}
+
+// Credenciais base para o usuário
+sealed class Credential(open val type: CredentialType)
+
+// Implementação de credencial com senha
+data class PasswordCredential(
+        override val type: CredentialType = CredentialType.PASSWORD,
+        val password: String
+) : Credential(type)
+
+// Implementação de credencial do GitHub (sem senha, só com OAuth)
+data class GithubCredential(
+        override val type: CredentialType = CredentialType.GITHUB,
+        val githubLogin: String,
+        val githubId: String
+) : Credential(type)
