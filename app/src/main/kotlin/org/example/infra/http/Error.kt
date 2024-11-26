@@ -10,7 +10,7 @@ data class ApiErrorResponse(
         val message: String,
         val timestamp: String = LocalDateTime.now().format(formatter).toString(),
         val path: String? = null,
-        val subErrors: Any? = null
+        val details: Any? = null
 )
 
 enum class HttpStatus(val code: Int, val message: String) {

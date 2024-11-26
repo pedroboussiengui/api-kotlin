@@ -1,5 +1,7 @@
 package org.example.domain.users
 
+import org.example.domain.RepositoryExceptions
+
 interface UserRepository {
     fun addUser(user: User): Result<Long>
     fun getAll(): List<User>

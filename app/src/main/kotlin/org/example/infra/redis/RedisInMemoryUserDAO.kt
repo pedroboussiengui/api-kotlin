@@ -17,8 +17,8 @@ class RedisInMemoryUserDAO: InMemoryDAO<Long> {
         jedis.setex(key, expireIn, value.toString())
     }
 
-    override fun get(key: String): Long {
-        return jedis.get(key).toLong()
+    override fun get(key: String): Long? {
+        return jedis.get(key)?.toLong()
     }
 
     override fun delete(key: String) {

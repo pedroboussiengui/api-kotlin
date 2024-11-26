@@ -16,12 +16,12 @@ object ContextHelpers {
     }
 
     // Helper para lidar com erros
-    fun Context.handleError(httpStatus: HttpStatus, message: String, subErrors: Any? = null) {
+    fun Context.handleError(httpStatus: HttpStatus, message: String, details: Any? = null) {
         val apiError = ApiErrorResponse(
                 status = httpStatus.code,
                 message = message,
                 path = this.path(),
-                subErrors = subErrors
+                details = details
         )
         this.status(httpStatus.code).json(apiError)
     }

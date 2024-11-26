@@ -1,40 +1,31 @@
 package org.example.application.usecases.user
 
-import org.example.application.UseCaseResult
+import org.example.adapter.UserUpdateReqDto
+import org.example.application.Container
 import org.example.domain.DomainExceptions
 import org.example.domain.users.User
 import org.example.domain.users.UserRepository
 
-data class UserUpdateReqDto(
-    val username: String?,
-    val email: String?
-)
-
 class UpdateUserUseCase(
         private val userDb: UserRepository
 ) {
-    fun execute(id: Long, input: UserUpdateReqDto): UseCaseResult<Any> {
-        val user: User = userDb.getById(id).fold(
-                onSuccess = { it },
-                onFailure = { err ->
-                    return UseCaseResult.NotFoundError(err.message!!)
-                }
-        )
-        input.username?.let { user.username = it }
-        input.email?.let { user.email = it }
+    fun execute(id: Long, input: UserUpdateReqDto): Container<Throwable, Long> = Container.catch {
+        // tenta buscar o user pelo id
+        val user: User = userDb.getById(id).getOrThrow()
+        // verifica se o email já existe
         val existingUser: User? = userDb.getByEmail(user.email)
         if (existingUser != null && existingUser.id != id) {
-            return UseCaseResult.BusinessRuleError("E-mail already exists")
+            throw DomainExceptions.ConflictException("E-mail already exists")
         }
-        user.isValid().onFailure { err ->
-            if (err is DomainExceptions.ValidationError) return UseCaseResult.ValidationError(err.errors)
-        }
-        val updatedUserId: Long = userDb.update(id, user).fold(
-                onSuccess = { it },
-                onFailure = { err ->
-                    return UseCaseResult.NotFoundError(err.message!!)
-                }
-        )
-        return UseCaseResult.Success(updatedUserId)
+
+        // atualiza os campos passados
+        input.username?.let { user.username = it }
+        input.email?.let { user.email = it }
+
+        // valida
+        user.isValid()
+        // atualiza e devolve o id
+        val updatedUserId: Long = userDb.update(id, user).getOrThrow()
+        updatedUserId
     }
 }

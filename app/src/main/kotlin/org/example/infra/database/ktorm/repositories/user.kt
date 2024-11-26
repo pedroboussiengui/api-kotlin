@@ -1,5 +1,6 @@
 package org.example.infra.database.ktorm.repositories
 
+import org.example.domain.RepositoryExceptions
 import org.example.infra.http.ApiError
 import org.example.domain.users.Address
 import org.example.domain.users.User
@@ -40,11 +41,11 @@ class SQLiteUserRepository : UserRepository {
     }
 
     override fun getById(id: Long): Result<User> {
-        return database.sequenceOf(Users).find { it.id eq id }
-                ?.let {
-                    Result.success(fromPersistence(it))
-                }
-                ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
+        return runCatching {
+            database.sequenceOf(Users).find { it.id eq id }
+                    ?.let { fromPersistence(it) }
+                    ?: throw RepositoryExceptions.NotFoundException("User with ID $id was not found")
+        }
     }
 
     override fun update(id: Long, newUser: User): Result<Long> {
@@ -59,12 +60,12 @@ class SQLiteUserRepository : UserRepository {
     }
 
     override fun remove(id: Long): Result<Boolean> {
-        return database.sequenceOf(Users).find { it.id eq id }
-                ?.let {
-                    it.delete()
-                    Result.success(true)
-                }
-                ?: Result.failure(ApiError.NotFoundError("User with ID $id was not found"))
+        return runCatching {
+            val user = database.sequenceOf(Users).find { it.id eq id }
+                    ?: throw RepositoryExceptions.NotFoundException("User with ID $id was not found")
+            user.delete()
+            true
+        }
     }
 
     override fun setAddress(id: Long, address: Address): Result<User> {

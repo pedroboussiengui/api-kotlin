@@ -5,7 +5,7 @@ package org.example.adapter
  */
 interface InMemoryDAO<T> {
     fun save(key: String, value: T)
-    fun get(key: String): T
+    fun get(key: String): T?
     fun delete(key: String)
     fun getAll(): Set<String>
     fun remainingTime(key: String): Long

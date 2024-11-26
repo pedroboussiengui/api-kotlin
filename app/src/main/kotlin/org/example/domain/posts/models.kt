@@ -35,8 +35,8 @@ class Post(
         this.isPrivate = isPrivate
     }
 
-    fun isValid(): Result<Boolean> {
-        try {
+    fun isValid(): Boolean {
+        return try {
             validate(this) {
                 validate(Post::id).isPositive()
                 validate(Post::title).hasSize(min = 3, max = 80)
@@ -46,13 +46,13 @@ class Post(
                 validate(Post::isPrivate).isNotNull()
                 validate(Post::owner).isNotNull() // post cannot be without user owner
             }
-            return Result.success(true)
+            true
         } catch (ex: ConstraintViolationException) {
             val listErrs = ex.constraintViolations
                     .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
                     .map { "${it.property}: ${it.message}" }
                     .toList()
-            return Result.failure(DomainExceptions.ValidationError(listErrs))
+            throw DomainExceptions.ValidationException("Validation error", listErrs)
         }
     }
 

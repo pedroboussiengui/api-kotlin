@@ -18,35 +18,22 @@ class User(
     var type: UserType,
     var address: Address?
 ) {
-    fun isValid(): Result<Boolean> {
-        try {
+    fun isValid(): Boolean {
+        return try {
             validate(this) {
                 validate(User::id).isPositive()
                 validate(User::username).hasSize(min = 3, max = 80)
-                validate(User::password).hasSize(min = 8).matches(Regex("^[a-zA-Z0-9]*$"))
+                validate(User::password).hasSize(min = 8)
                 validate(User::email).isEmail()
                 validate(User::type).isIn(UserType.entries)
-                validate(User::address).validate {
-                    validate(Address::cep).isNotEmpty().matches(Regex("^\\d{5}-?\\d{3}\$"))
-                    validate(Address::rua).isNotEmpty()
-                    validate(Address::numero).isPositive()
-                    validate(Address::bairro).isNotEmpty()
-                    validate(Address::cidade).isNotEmpty()
-                    validate(Address::estado).isIn(listOf(
-                            "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES",
-                            "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
-                            "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
-                            "SP", "SE", "TO"
-                    ))
-                }
             }
-            return Result.success(true)
+            address?.isValid() ?: true
         } catch (ex: ConstraintViolationException) {
             val listErrs = ex.constraintViolations
-                .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
-                .map { "${it.property}: ${it.message}" }
-                .toList()
-            return Result.failure(DomainExceptions.ValidationError(listErrs))
+                    .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
+                    .map { "${it.property}: ${it.message}" }
+                    .toList()
+            throw DomainExceptions.ValidationException("Validation error", listErrs)
         }
     }
 }
@@ -58,7 +45,32 @@ class Address(
     val bairro: String,
     val cidade: String,
     val estado: String
-)
+) {
+    fun isValid(): Boolean {
+        return try {
+            validate(this) {
+                validate(Address::cep).isNotEmpty().matches(Regex("^\\d{5}-?\\d{3}\$"))
+                validate(Address::rua).isNotEmpty()
+                validate(Address::numero).isPositive()
+                validate(Address::bairro).isNotEmpty()
+                validate(Address::cidade).isNotEmpty()
+                validate(Address::estado).isIn(listOf(
+                        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES",
+                        "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
+                        "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+                        "SP", "SE", "TO"
+                ))
+            }
+            true
+        } catch (ex: ConstraintViolationException) {
+            val listErrs = ex.constraintViolations
+                    .mapToMessage(baseName = "messages", locale = Locale.ENGLISH)
+                    .map { "${it.property}: ${it.message}" }
+                    .toList()
+            throw DomainExceptions.ValidationException("Validation error", listErrs)
+        }
+    }
+}
 
 enum class UserType {
     USER,           // common application user (post, following, followers, likes)

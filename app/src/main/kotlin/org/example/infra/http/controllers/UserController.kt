@@ -1,15 +1,16 @@
 package org.example.infra.http.controllers
 
 import io.javalin.http.Context
-import org.example.infra.http.HttpStatus
-import org.example.application.UseCaseResult
-import org.example.application.usecases.auth.PasswordAuthenticationUseCase
+import org.example.adapter.*
+import org.example.application.Container
 import org.example.application.usecases.user.*
+import org.example.domain.DomainExceptions
+import org.example.domain.RepositoryExceptions
 import org.example.infra.bcrypt.BCryptPasswordHasher
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.filestorage.MinioFileHandler
 import org.example.infra.filestorage.MinioSingletonConnection
-import org.example.infra.http.controllers.ContextHelpers.contextUser
+import org.example.infra.http.HttpStatus
 import org.example.infra.http.controllers.ContextHelpers.handleError
 import org.example.infra.http.controllers.ContextHelpers.validId
 import org.example.infra.redis.RedisInMemoryUserDAO
@@ -17,43 +18,64 @@ import org.example.infra.redis.RedisInMemoryUserDAO
 object UserController {
     private val minioClient = MinioSingletonConnection.minioClient
 
+    private fun handleException(ctx: Context, ex: Throwable) {
+        when (ex) {
+            is DomainExceptions.ValidationException -> {
+                ctx.handleError(HttpStatus.BAD_REQUEST, message = ex.message, details = ex.errors)
+            }
+            is DomainExceptions.ConflictException -> {
+                ctx.handleError(HttpStatus.CONFLICT, message = ex.message)
+            }
+            is DomainExceptions.LimitExceededException -> {
+                ctx.handleError(HttpStatus.BAD_REQUEST, message = ex.message)
+            }
+            is DomainExceptions.NotAllowedException -> {
+                ctx.handleError(HttpStatus.FORBIDDEN, message = ex.message)
+            }
+            is RepositoryExceptions.NotFoundException -> {
+                ctx.handleError(HttpStatus.NOT_FOUND, message = ex.message)
+            }
+            else -> ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, message = "Unknown error: ${ex.message}")
+        }
+    }
+
     fun add(ctx: Context) {
         val req = ctx.bodyAsClass(UserCreateReqDto::class.java)
         val addUserUseCase = AddUserUseCase(SQLiteUserRepository(), BCryptPasswordHasher())
-        when (val res = addUserUseCase.execute(req)) {
-            is UseCaseResult.Success -> {
-                ctx.status(201).json(res.data)
+
+        when(val res = addUserUseCase.execute(req)) {
+            is Container.Success -> {
+                ctx.status(201).json(res.value)
             }
-            is UseCaseResult.BusinessRuleError -> {
-                ctx.handleError(HttpStatus.CONFLICT, message = res.message)
-            }
-            is UseCaseResult.ValidationError -> {
-                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
-            }
-            else -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
 
     fun getAll(ctx: Context) {
         val getAllUsersUserUseCase = GetAllUsersUseCase(SQLiteUserRepository())
-        val res = getAllUsersUserUseCase.execute()
-        ctx.json(res)
+
+        when(val res = getAllUsersUserUseCase.execute()) {
+            is Container.Success -> {
+                ctx.json(res.value)
+            }
+            is Container.Failure -> {
+                handleException(ctx, res.value)
+            }
+        }
     }
 
     fun getById(ctx: Context) {
         val id = ctx.validId() ?: return
         val getUserByIdUseCase = GetUserByIdUseCase(SQLiteUserRepository())
-        when (val res = getUserByIdUseCase.execute(id)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res.data)
+
+        when(val res = getUserByIdUseCase.execute(id)) {
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.NotFoundError -> {
-                ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
-            }
-            else -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
@@ -64,35 +86,25 @@ object UserController {
 
         val updateUserUseCase = UpdateUserUseCase(SQLiteUserRepository())
         when (val res = updateUserUseCase.execute(id, req)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res.data)
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.BusinessRuleError -> {
-                ctx.handleError(HttpStatus.CONFLICT, message = res.message)
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
-            is UseCaseResult.NotFoundError -> {
-                ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
-            }
-            is UseCaseResult.ValidationError -> {
-                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
-            }
-            else -> ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
         }
     }
 
     fun remove(ctx: Context) {
         val id = ctx.validId() ?: return
 
-        val removeUserUseCase = RemoveUseUseCase(SQLiteUserRepository())
-        when (val res = removeUserUseCase.execute(id)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res.data)
+        val removeUserByIdUseCase = RemoveUserByIdUseCase(SQLiteUserRepository())
+        when (val res = removeUserByIdUseCase.execute(id)) {
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.NotFoundError -> {
-                ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
-            }
-            else -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
@@ -103,17 +115,11 @@ object UserController {
 
         val setAddressUserUseCase = SetAddressUserUseCase(SQLiteUserRepository())
         when (val res = setAddressUserUseCase.execute(id, req)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res.data)
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.NotFoundError -> {
-                ctx.handleError(HttpStatus.NOT_FOUND, message = res.message)
-            }
-            is UseCaseResult.ValidationError -> {
-                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
-            }
-            else -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
@@ -121,51 +127,44 @@ object UserController {
     fun addModerator(ctx: Context) {
         val req = ctx.bodyAsClass(ModUserCreateReqDto::class.java)
         val addModeratorUserUseCase = AddModeratorUserUseCase(SQLiteUserRepository())
-        when (val res = addModeratorUserUseCase.execute(req)) {
-            is UseCaseResult.Success -> {
-                ctx.status(201).json(res.data)
+
+        when(val res = addModeratorUserUseCase.execute(req)) {
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.BusinessRuleError -> {
-                ctx.handleError(HttpStatus.CONFLICT, message = res.message)
-            }
-            is UseCaseResult.ValidationError -> {
-                ctx.handleError(HttpStatus.BAD_REQUEST, message = "Validation error", subErrors = res.errors)
-            }
-            else -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
 
     fun uploadAvatar(ctx: Context) {
-        val file = ctx.uploadedFile("avatar") ?: return
+        val sessionCookie = ctx.cookie("session_id")
+        if (sessionCookie == null) {
+            ctx.handleError(HttpStatus.UNAUTHORIZED, "Authentication failed")
+            return
+        }
 
-        val contextUser = ctx.contextUser() ?: return
+        val file = ctx.uploadedFile("avatar")
+        if (file == null) {
+            ctx.handleError(HttpStatus.BAD_REQUEST, "Upload file should not be null")
+            return
+        }
 
         val addUserAvatarUseCase = AddUserAvatarUseCase(
                 SQLiteUserRepository(),
-                MinioFileHandler(minioClient, "teste")
+                MinioFileHandler(minioClient, "teste"),
+                RedisInMemoryUserDAO()
         )
         val req = FileReqDto(file.content(), file.size(), file.extension())
-        when (val res = addUserAvatarUseCase.execute(contextUser, req)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res)
+        when (val res = addUserAvatarUseCase.execute(sessionCookie, req)) {
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            is UseCaseResult.BusinessRuleError -> {
-                ctx.handleError(HttpStatus.BAD_REQUEST, res.message)
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
-            is UseCaseResult.InternalError -> {
-                ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, res.message)
-            }
-            is UseCaseResult.NotAllowedError -> {
-                ctx.handleError(HttpStatus.FORBIDDEN, res.message)
-            }
-            is UseCaseResult.NotFoundError -> {
-                ctx.handleError(HttpStatus.NOT_FOUND, res.message)
-            }
-            else -> ctx.handleError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error")
         }
-
     }
 
     fun getMe(ctx: Context) {
@@ -177,11 +176,11 @@ object UserController {
 
         val getMeUseCase = GetMeUseCase(SQLiteUserRepository(), RedisInMemoryUserDAO())
         when (val res = getMeUseCase.execute(sessionCookie)) {
-            is UseCaseResult.Success -> {
-                ctx.json(res.data)
+            is Container.Success -> {
+                ctx.json(res.value)
             }
-            else -> {
-                ctx.handleError(HttpStatus.UNAUTHORIZED, "Invalid session")
+            is Container.Failure -> {
+                handleException(ctx, res.value)
             }
         }
     }
