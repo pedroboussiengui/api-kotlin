@@ -58,3 +58,13 @@ data class UserUpdateReqDto(
         val username: String?,
         val email: String?
 )
+
+data class AuthenticationPassowordReqDto(
+        val email: String,
+        val password: String
+)
+
+data class AuthenticationPassowordResDto(
+        val cookieSecret: String,
+        val message: String
+)

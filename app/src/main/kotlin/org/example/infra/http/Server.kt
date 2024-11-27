@@ -2,9 +2,9 @@ package org.example.infra.http
 
 import io.javalin.Javalin
 import org.example.infra.environments.Environment
-//import org.example.infra.http.controllers.AuthenticationController
+import org.example.infra.http.controllers.AuthenticationController
 import org.example.infra.http.controllers.MonitoringController
-//import org.example.infra.http.controllers.PostController
+import org.example.infra.http.controllers.PostController
 import org.example.infra.http.controllers.UserController
 
 class Server {
@@ -28,11 +28,11 @@ class Server {
         // monitoramento
         app.get("/health", MonitoringController::healthcheck)
 
-//        app.post("/password-auth", AuthenticationController::authenticateByPassword)
+        app.post("/password-auth", AuthenticationController::authenticateByPassword)
 //
-//        app.get("/github-authentication", AuthenticationController::authenticateByGithub)
+        app.get("/github-authentication", AuthenticationController::authenticateByGithub)
 //
-//        app.get("/callback/github", AuthenticationController::githubCallback)
+        app.get("/callback/github", AuthenticationController::githubCallback)
 
         app.get("/me", UserController::getMe)
 
@@ -54,11 +54,9 @@ class Server {
 
         app.post("/users/{id}/address", UserController::setAddress)
 
-//        app.post("/posts", PostController::create)
-//
-//        app.get("/posts/my", PostController::getMyPosts)
-//
-//        app.get("/posts/users/{id}", PostController::getUserPosts)
+        app.post("/posts", PostController::create)
+
+        app.get("/posts/my", PostController::getMyPosts)
     }
 
     fun start() {

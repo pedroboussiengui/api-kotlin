@@ -28,4 +28,9 @@ sealed class DomainExceptions {
      * when authorization police fails
      */
     data class NotAllowedException(override val message: String): RuntimeException(message)
+
+    /**
+     * when authentication fails
+     */
+    data class NotAuthenticatedException(override val message: String): RuntimeException(message)
 }
