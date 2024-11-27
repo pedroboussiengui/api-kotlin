@@ -34,6 +34,8 @@ class Server {
 //
         app.get("/callback/github", AuthenticationController::githubCallback)
 
+        app.delete("/session", AuthenticationController::finishSession)
+
         app.get("/me", UserController::getMe)
 
         app.get("/active-sessions", MonitoringController::getActiveSessions)

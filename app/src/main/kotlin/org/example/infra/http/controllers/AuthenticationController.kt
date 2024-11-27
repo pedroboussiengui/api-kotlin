@@ -10,10 +10,13 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.example.adapter.AuthenticationPassowordReqDto
 import org.example.application.Container
+import org.example.application.usecases.auth.FinishSessionUseCase
 import org.example.application.usecases.auth.PasswordAuthenticationUseCase
 import org.example.infra.bcrypt.BCryptPasswordHasher
 import org.example.infra.database.ktorm.repositories.SQLiteUserRepository
 import org.example.infra.environments.Environment
+import org.example.infra.http.HttpStatus
+import org.example.infra.http.controllers.ContextHelpers.handleError
 import org.example.infra.redis.RedisInMemoryUserDAO
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -49,6 +52,24 @@ object AuthenticationController {
                     path = "/"
                 }
                 ctx.cookie(sessionCookie)
+                ctx.json(res.value)
+            }
+            is Container.Failure -> {
+                ContextHelpers.handleException(ctx, res.value)
+            }
+        }
+    }
+
+    fun finishSession(ctx: Context) {
+        val sessionCookie = ctx.cookie("session_id")
+        if (sessionCookie == null) {
+            ctx.handleError(HttpStatus.UNAUTHORIZED, "Authentication failed")
+            return
+        }
+
+        val finishSessionUseCase = FinishSessionUseCase(RedisInMemoryUserDAO())
+        when (val res = finishSessionUseCase.execute(sessionCookie)) {
+            is Container.Success -> {
                 ctx.json(res.value)
             }
             is Container.Failure -> {

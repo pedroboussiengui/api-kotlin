@@ -68,3 +68,7 @@ data class AuthenticationPassowordResDto(
         val cookieSecret: String,
         val message: String
 )
+
+data class FishshSessionOutput(
+        val message: String
+)
